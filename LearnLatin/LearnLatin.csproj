@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <Folder Include="Models\ViewModels\" />
+    <Folder Include="Views\Mockups\" />
   </ItemGroup>
 
 </Project>
