@@ -8,6 +8,12 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20210420072503_AddUsers.cs" />
     <Compile Remove="Data\Migrations\20210420072503_AddUsers.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210420073425_AddVocabularies.cs" />
+    <Compile Remove="Data\Migrations\20210420073425_AddVocabularies.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210420074330_AddLatinWords.cs" />
+    <Compile Remove="Data\Migrations\20210420074330_AddLatinWords.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210420074917_ChangeNames.cs" />
+    <Compile Remove="Data\Migrations\20210420074917_ChangeNames.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
