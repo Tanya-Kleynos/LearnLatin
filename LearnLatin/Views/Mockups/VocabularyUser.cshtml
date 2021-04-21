@@ -1,0 +1,96 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Vocabulary";
+}
+
+<h2>Словарь</h2>
+
+<button type="button" class="btn btn-success text-center btn-green-all btn-add">+ Добавить слово</button>
+
+<table class="table table-responsive-sm">
+    <thead class="table-dark">
+        <tr>
+            <th>Слово</th>
+            <th>Перевод</th>
+            <th>Тренировать</th>
+            <th>Изучено</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody class="table-striped">
+        <!--Word - пример-->
+        <tr>
+            <th scope="row" class="align-middle">
+                Language
+            </th>
+            <td class="align-middle">
+                Язык
+            </td>
+            <td class="align-middle">
+                <input class="check-box" type="checkbox">
+            </td>
+            <td class="align-middle">
+                <div class="persent" style="background-color: #325fff;">50%</div>
+            </td>
+
+            <td class="align-middle">
+                <a>
+                    <i data-toggle="tooltip" data-title="Редактировать" class="fas fa-pencil-alt fa-lg text-muted hand_cursor"></i>
+                </a>
+                <a>
+                    <i data-toggle="tooltip" data-title="Удалить" class="fas fa-trash-alt fa-lg text-danger hand_cursor"></i>
+                </a>
+            </td>
+        </tr>
+
+        <!--Задача - пример-->
+        <tr>
+            <th scope="row" class="align-middle">
+                Wrist
+            </th>
+            <td class="align-middle">
+                Запястье
+            </td>
+            <td class="align-middle">
+                <input class="check-box" disabled="disabled" type="checkbox">
+            </td>
+            <td class="align-middle">
+                <div class="persent" style="background-color: #77D72C;" >100%</div>               
+            </td>
+
+            <td class="align-middle">
+                <a>
+                    <i data-toggle="tooltip" data-title="Редактировать" class="fas fa-pencil-alt fa-lg text-muted hand_cursor"></i>
+                </a>
+                <a>
+                    <i data-toggle="tooltip" data-title="Удалить" class="fas fa-trash-alt fa-lg text-danger hand_cursor"></i>
+                </a>
+            </td>
+        </tr>
+
+        <!--Задача - пример-->
+        <tr>
+            <th scope="row" class="align-middle">
+                Tightrope walker
+            </th>
+            <td class="align-middle">
+                Канатоходец
+            </td>
+            <td class="align-middle">
+                <input class="check-box" type="checkbox" checked>
+            </td>
+            <td class="align-middle">
+                <div class="persent" style="background-color: #f1be27;">0%</div>
+            </td>
+
+            <td class="align-middle">
+                <a>
+                    <i data-toggle="tooltip" data-title="Редактировать" class="fas fa-pencil-alt fa-lg text-muted hand_cursor"></i>
+                </a>
+                <a>
+                    <i data-toggle="tooltip" data-title="Удалить" class="fas fa-trash-alt fa-lg text-danger hand_cursor"></i>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
