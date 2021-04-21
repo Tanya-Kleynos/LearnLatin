@@ -23,9 +23,9 @@ namespace LearnLatin.Controllers
             return this.View();
         }
 
-        /*public IActionResult ***()
+        public IActionResult Cards()
         {
             return this.View();
-        }*/
+        }
     }
 }
