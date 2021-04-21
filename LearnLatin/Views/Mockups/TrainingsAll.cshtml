@@ -1,5 +1,48 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model dynamic
 @{
+    ViewBag.Title = "Trainings";
 }
+
+<h2 class="text-center">~~~~Изучи~~~~</h2>
+
+<div class="col-md-6 col-sm-8 col-lg-4 col-10" style="margin: auto;">
+    <div class="card m-4">
+        <img class="card-img-top" style="padding: 10px;" src="~/img/logoCards.png" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title text-center">Словарные карточки</h5>
+            <p class="card-text font-italic">Повторим? Двусторонние словарные карточки помогут лучше запомнить слова!</p>
+        </div>
+    </div>
+</div>
+
+
+<h2 class="text-center">~~~~Тренируй~~~~</h2>
+<div class="card-deck">
+    <div class="col-md-6 col-sm-8 col-lg-4 col-10">
+        <div class="card m-2">
+            <img class="card-img-top" style="padding: 10px;" src="~/img/logotr1.png" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title text-center">Тренировка "Выбери перевод"</h5>
+                <p class="card-text font-italic">Дается слово и пять вариантов перевода. Необходимо выбрать правильный. Не беспокойся! С вероятностью 0.2 ты сделаешь это :D</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-8 col-lg-4 col-10">
+        <div class="card m-2">
+            <img class="card-img-top" style="padding: 10px;" src="~/img/logotr2.png" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title text-center">Тренировка "Выбери слово"</h5>
+                <p class="card-text font-italic">Дается перевод и пять вариантов, среди которых нужно выбрать верное исходное слово</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-sm-8 col-lg-4 col-10">
+        <div class="card m-2">
+            <img class="card-img-top" style="padding: 10px;" src="~/img/logotr3.png" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title text-center">Тренировка "Введи слово"</h5>
+                <p class="card-text font-italic">Дан перевод. Необходимо ввести слово с клавиатуры. Будь внимателен! Каждая буква на счету</p>
+            </div>
+        </div>
+    </div>
+</div>
