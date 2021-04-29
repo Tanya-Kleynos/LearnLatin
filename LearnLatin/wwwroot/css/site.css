@@ -184,3 +184,15 @@ body {
 .progress {
     margin-bottom: 10px;
 }
+
+.btn-train-word {
+    background-color: #ECECEC;
+}
+
+.wrong-answer {
+    background: #ff3b4e;
+}
+
+.right-answer {
+    background: #68d444;
+}

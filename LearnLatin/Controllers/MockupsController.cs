@@ -27,5 +27,15 @@ namespace LearnLatin.Controllers
         {
             return this.View();
         }
+
+        public IActionResult Training1()
+        {
+            return this.View();
+        }
+
+        public IActionResult Training3()
+        {
+            return this.View();
+        }
     }
 }
