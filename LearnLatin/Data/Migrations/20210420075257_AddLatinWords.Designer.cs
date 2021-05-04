@@ -4,14 +4,16 @@ using LearnLatin.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LearnLatin.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210420075257_AddLatinWords")]
+    partial class AddLatinWords
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,30 +64,6 @@ namespace LearnLatin.Data.Migrations
                     b.HasIndex("OwnerId");
 
                     b.ToTable("VocabularyUsers");
-                });
-
-            modelBuilder.Entity("LearnLatin.Models.WordAttachment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("LatinWordId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LatinWordId")
-                        .IsUnique();
-
-                    b.ToTable("WordAttachments");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -315,15 +293,6 @@ namespace LearnLatin.Data.Migrations
                     b.HasOne("LearnLatin.Models.ApplicationUser", "Owner")
                         .WithMany()
                         .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("LearnLatin.Models.WordAttachment", b =>
-                {
-                    b.HasOne("LearnLatin.Models.LatinWord", "LatinWord")
-                        .WithOne("WordAttachment")
-                        .HasForeignKey("LearnLatin.Models.WordAttachment", "LatinWordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
