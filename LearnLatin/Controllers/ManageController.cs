@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using LearnLatin.Models;
 using LearnLatin.Models.ManageViewModels;
 
-namespace Backend6.Controllers
+namespace LearnLatin.Controllers
 {
     [Authorize]
     public class ManageController : Controller
