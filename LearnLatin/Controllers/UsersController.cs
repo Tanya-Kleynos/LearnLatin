@@ -12,10 +12,13 @@ namespace LearnLatin.Controllers
     public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> userManager;
+        private readonly SignInManager<ApplicationUser> signInManager;
 
-        public UsersController(UserManager<ApplicationUser> userManager)
+        public UsersController(UserManager<ApplicationUser> userManager,
+          SignInManager<ApplicationUser> signInManager)
         {
             this.userManager = userManager;
+            this.signInManager = signInManager;
         }
 
         // GET: /Users/Edit
@@ -38,7 +41,7 @@ namespace LearnLatin.Controllers
         // POST: /Users/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditProfile(EditViewModel model)
+        public async Task<IActionResult> Edit(EditViewModel model)
         {
             if (!this.ModelState.IsValid)
             {
@@ -55,6 +58,8 @@ namespace LearnLatin.Controllers
 
                 if (result.Succeeded)
                 {
+                    await this.signInManager.SignOutAsync();
+                    await this.signInManager.PasswordSignInAsync(user.UserName, user.PasswordHash, true, lockoutOnFailure: false);
                     return RedirectToAction("Index", "PersonalArea");
                 }
                 else

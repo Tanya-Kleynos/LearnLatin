@@ -76,7 +76,7 @@ namespace LearnLatin.Controllers
                 return this.View(model);
             }
 
-            return this.RedirectToAction(nameof(ManageController.Index), new { Message = ManageMessageId.Error });
+            return this.RedirectToAction("Index", "PersonalArea");
         }
 
         #region Helpers
