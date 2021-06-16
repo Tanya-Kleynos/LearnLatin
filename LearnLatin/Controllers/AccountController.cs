@@ -55,18 +55,26 @@ namespace LearnLatin.Controllers
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 ApplicationUser user = await userManager.FindByEmailAsync(model.Email);
-                var result = await this.signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+                if (user != null)
                 {
-                    this.logger.LogInformation(1, "User logged in.");
-                    return this.RedirectToLocal(returnUrl);
-                }
+                    var result = await this.signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
+                    if (result.Succeeded)
+                    {
+                        this.logger.LogInformation(1, "User logged in.");
+                        return this.RedirectToLocal(returnUrl);
+                    }
 
-                if (result.IsLockedOut)
-                {
-                    this.logger.LogWarning(2, "User account locked out.");
-                    return this.View("Lockout");
+                    if (result.IsLockedOut)
+                    {
+                        this.logger.LogWarning(2, "User account locked out.");
+                        return this.View("Lockout");
+                    }
                 }
+                else
+                {
+                    ModelState.AddModelError(String.Empty, "User doesn't exist.");
+                }
+                
 
                 this.ModelState.AddModelError(String.Empty, "Invalid login attempt.");
                 return this.View(model);

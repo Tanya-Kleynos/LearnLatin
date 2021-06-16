@@ -58,8 +58,8 @@ namespace LearnLatin.Controllers
 
                 if (result.Succeeded)
                 {
-                    await this.signInManager.SignOutAsync();
-                    await this.signInManager.PasswordSignInAsync(user.UserName, user.PasswordHash, true, lockoutOnFailure: false);
+                    //await this.signInManager.SignOutAsync();
+                    //await this.signInManager.PasswordSignInAsync(user.UserName, user.PasswordHash, true, lockoutOnFailure: false);
                     return RedirectToAction("Index", "PersonalArea");
                 }
                 else
@@ -72,6 +72,23 @@ namespace LearnLatin.Controllers
             }
 
             return View(model);
+        }
+
+        public IActionResult Delete()
+        {
+            return View();
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirm()
+        {
+            var user = await userManager.GetUserAsync(this.HttpContext.User);
+            if (user != null)
+            {
+                await this.signInManager.SignOutAsync();
+                await userManager.DeleteAsync(user);
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }
