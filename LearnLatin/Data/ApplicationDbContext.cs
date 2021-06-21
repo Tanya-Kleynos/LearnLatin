@@ -13,11 +13,6 @@ namespace LearnLatin.Data
             : base(options)
         {
         }
-
-        public DbSet<VocabularyUser> VocabularyUsers { get; set; }
-
-        public DbSet<LatinWord> LatinWords { get; set; }
-
-        public DbSet<WordAttachment> WordAttachments { get; set; }
+        public DbSet<TestTask> TestTasks { get; set; }
     }
 }
