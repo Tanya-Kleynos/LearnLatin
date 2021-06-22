@@ -16,6 +16,10 @@
            asp-area="" asp-controller="Users" asp-action="Delete">
             Удалить аккаунт
         </a>
+        <a class="btn btn-primary text-center mr-3"
+           asp-area="" asp-controller="Tests" asp-action="Index">
+            Тесты
+        </a>
     </div>
     <div class="row">
         <div class="col-12 h-100 d-flex flex-column justify-content-center">
@@ -27,6 +31,10 @@
                         <tr>
                             <th>
                                 Тема
+                                <a class="btn btn-primary text-center mr-3"
+                                   asp-area="" asp-controller="Tests" asp-action="Display">
+                                    Пройти тест
+                                </a>
                             </th>
                             <th>
                                 Прогресс

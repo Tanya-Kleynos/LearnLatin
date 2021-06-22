@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LearnLatin.Models.CreateViewModels
+namespace LearnLatin.Models.EditViewModels
 {
-    public class TestTaskCreateViewModel
+    public class TestEditViewModel
     {
+        public String Name { get; set; }
         public String Description { get; set; }
     }
 }

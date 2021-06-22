@@ -50,7 +50,7 @@ namespace LearnLatin.Controllers
         }
 
         // GET: TestTasks/Create
-        public async Task<IActionResult> CreateAsync(Guid testId)
+        public async Task<IActionResult> Create(Guid testId)
         {
             if (testId == null)
             {
@@ -95,6 +95,7 @@ namespace LearnLatin.Controllers
             {
                 var testTask = new TestTask
                 {
+                    Test = test,
                     Description = model.Description,
                     Created = DateTime.Now,
                     Creator = user
@@ -102,7 +103,7 @@ namespace LearnLatin.Controllers
 
                 this._context.Add(testTask);
                 await this._context.SaveChangesAsync();
-                /*return this.RedirectToAction("Index", "ForumCategories", new { forumCategoryId = forumCategory.Id });*/
+                return this.RedirectToAction("Details", "Tests", new { id = test.Id });
             }
             this.ViewBag.Test = test;
             return View(model);

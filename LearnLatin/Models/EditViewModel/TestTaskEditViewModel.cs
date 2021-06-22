@@ -8,6 +8,5 @@ namespace LearnLatin.Models.EditViewModels
     public class TestTaskEditViewModel
     {
         public String Description { get; set; }
-
     }
 }

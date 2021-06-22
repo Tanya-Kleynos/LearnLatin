@@ -4,14 +4,16 @@ using LearnLatin.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LearnLatin.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210621083021_AddTests")]
+    partial class AddTests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,16 +75,11 @@ namespace LearnLatin.Data.Migrations
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("TestId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
 
                     b.HasIndex("EditorId");
-
-                    b.HasIndex("TestId");
 
                     b.ToTable("TestTasks");
                 });
@@ -316,10 +313,6 @@ namespace LearnLatin.Data.Migrations
                     b.HasOne("LearnLatin.Models.ApplicationUser", "Editor")
                         .WithMany()
                         .HasForeignKey("EditorId");
-
-                    b.HasOne("LearnLatin.Models.Test", "Test")
-                        .WithMany("Tasks")
-                        .HasForeignKey("TestId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

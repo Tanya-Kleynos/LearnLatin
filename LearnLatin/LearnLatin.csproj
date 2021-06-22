@@ -20,6 +20,8 @@
     <Compile Remove="Data\Migrations\20210420075257_AddLatinWords.Designer.cs" />
     <Compile Remove="Data\Migrations\20210420080108_AddWordAttachments.cs" />
     <Compile Remove="Data\Migrations\20210420080108_AddWordAttachments.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210621093753_AddUpdate.cs" />
+    <Compile Remove="Data\Migrations\20210621093753_AddUpdate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

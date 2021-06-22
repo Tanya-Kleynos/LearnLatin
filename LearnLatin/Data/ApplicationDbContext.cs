@@ -14,5 +14,6 @@ namespace LearnLatin.Data
         {
         }
         public DbSet<TestTask> TestTasks { get; set; }
+        public DbSet<Test> Tests { get; set; }
     }
 }
