@@ -10,6 +10,7 @@ using LearnLatin.Models;
 using Microsoft.AspNetCore.Identity;
 using LearnLatin.Models.CreateViewModels;
 using LearnLatin.Models.EditViewModels;
+using LearnLatin.Models.ViewModels;
 
 namespace LearnLatin.Controllers
 {
@@ -49,6 +50,30 @@ namespace LearnLatin.Controllers
             return View(testTask);
         }
 
+        public async Task<IActionResult> Display(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var task = await _context.TestTasks
+                .Include(t => t.Test)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            var taskView = new TestTaskViewModel
+            {
+                Id = task.Id,
+                Description = task.Description
+            };
+
+            return View(taskView); 
+        }
         // GET: TestTasks/Create
         public async Task<IActionResult> Create(Guid testId)
         {
@@ -82,6 +107,7 @@ namespace LearnLatin.Controllers
             }
 
             var test = await this._context.Tests
+                .Include(t => t.Tasks)
                 .SingleOrDefaultAsync(x => x.Id == testId);
 
             if (test == null)
@@ -101,6 +127,16 @@ namespace LearnLatin.Controllers
                     Creator = user
                 };
 
+                if (test.NumOfTasks == null)
+                {
+                    testTask.NumInQueue = 1;
+                    test.NumOfTasks = 1;
+                }
+                else
+                {
+                    testTask.NumInQueue = (Int32)test.NumOfTasks + 1;
+                    test.NumOfTasks++;
+                }
                 this._context.Add(testTask);
                 await this._context.SaveChangesAsync();
                 return this.RedirectToAction("Details", "Tests", new { id = test.Id });
@@ -196,6 +232,44 @@ namespace LearnLatin.Controllers
         private bool TestTaskExists(Guid id)
         {
             return _context.TestTasks.Any(e => e.Id == id);
+        }
+
+        
+        public async Task<IActionResult> SaveResults(Guid? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var task = await _context.TestTasks
+                .Include(t => t.Test)
+                .ThenInclude(t => t.Tasks)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            if (task.Test != null)
+            {
+                if (task.NumInQueue == task.Test.NumOfTasks) // если таск последний в очереди
+                {
+                    return RedirectToAction("Index", "PersonalArea"); // подумать куда идти после окончания теста
+                }
+                else // если таск не последний в очереди
+                {
+                    foreach (var item in task.Test.Tasks) // ищем следующий по очереди таск
+                    {
+                        if (item.NumInQueue == (task.NumInQueue + 1))
+                        {
+                            return RedirectToAction("Display", "TestTasks", new { id = item.Id });
+                        }
+                    }
+                }
+            }
+            return View(task); //??????????????????
         }
     }
 }

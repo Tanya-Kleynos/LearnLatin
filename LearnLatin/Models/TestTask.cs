@@ -14,5 +14,6 @@ namespace LearnLatin.Models
         public ApplicationUser Creator { get; set; }
         public ApplicationUser Editor { get; set; }
         public Test Test { get; set; }
+        public Int32 NumInQueue { get; set; }
     }
 }

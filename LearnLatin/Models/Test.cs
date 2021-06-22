@@ -15,5 +15,6 @@ namespace LearnLatin.Models
         public ApplicationUser Creator { get; set; }
         public ApplicationUser Editor { get; set; }
         public ICollection<TestTask> Tasks { get; set; }
+        public Int32? NumOfTasks { get; set; }
     }
 }

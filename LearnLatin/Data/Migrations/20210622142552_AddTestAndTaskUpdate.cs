@@ -3,13 +3,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace LearnLatin.Data.Migrations
 {
-    public partial class AddTestUpdate : Migration
+    public partial class AddTestAndTaskUpdate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<int>(
+                name: "NumInQueue",
+                table: "TestTasks",
+                nullable: false,
+                defaultValue: 0);
+
             migrationBuilder.AddColumn<Guid>(
                 name: "TestId",
                 table: "TestTasks",
+                nullable: true);
+
+            migrationBuilder.AddColumn<int>(
+                name: "NumOfTasks",
+                table: "Tests",
                 nullable: true);
 
             migrationBuilder.CreateIndex(
@@ -37,8 +48,16 @@ namespace LearnLatin.Data.Migrations
                 table: "TestTasks");
 
             migrationBuilder.DropColumn(
+                name: "NumInQueue",
+                table: "TestTasks");
+
+            migrationBuilder.DropColumn(
                 name: "TestId",
                 table: "TestTasks");
+
+            migrationBuilder.DropColumn(
+                name: "NumOfTasks",
+                table: "Tests");
         }
     }
 }

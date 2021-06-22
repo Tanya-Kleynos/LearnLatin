@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnLatin.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210621093819_AddTestUpdate")]
-    partial class AddTestUpdate
+    [Migration("20210622142552_AddTestAndTaskUpdate")]
+    partial class AddTestAndTaskUpdate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -45,6 +45,9 @@ namespace LearnLatin.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("NumOfTasks")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
@@ -74,6 +77,9 @@ namespace LearnLatin.Data.Migrations
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("NumInQueue")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("TestId")
                         .HasColumnType("uniqueidentifier");

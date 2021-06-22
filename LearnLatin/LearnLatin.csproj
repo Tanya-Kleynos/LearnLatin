@@ -22,6 +22,12 @@
     <Compile Remove="Data\Migrations\20210420080108_AddWordAttachments.Designer.cs" />
     <Compile Remove="Data\Migrations\20210621093753_AddUpdate.cs" />
     <Compile Remove="Data\Migrations\20210621093753_AddUpdate.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210621093819_AddTestUpdate.cs" />
+    <Compile Remove="Data\Migrations\20210621093819_AddTestUpdate.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622142104_AddTaskUpdate.cs" />
+    <Compile Remove="Data\Migrations\20210622142104_AddTaskUpdate.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622142408_AddTestAndTaskUpdate.cs" />
+    <Compile Remove="Data\Migrations\20210622142408_AddTestAndTaskUpdate.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,10 +41,6 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\ViewModels\" />
   </ItemGroup>
 
 </Project>

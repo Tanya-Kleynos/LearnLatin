@@ -46,7 +46,7 @@ namespace LearnLatin.Controllers
 
             return View(test);
         }
-        public async Task<IActionResult> Display(Guid? id)
+        public async Task<IActionResult> Start(Guid? id)
         {
             if (id == null)
             {
@@ -56,12 +56,20 @@ namespace LearnLatin.Controllers
             var test = await _context.Tests
                 .Include(t => t.Tasks)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (test == null)
+
+            if (test == null || test.NumOfTasks == null)
             {
                 return NotFound();
             }
 
-            return View(test);
+            foreach (var item in test.Tasks)
+            {
+                if (item.NumInQueue == 1)
+                {
+                    return RedirectToAction("Display", "TestTasks", new { id = item.Id });
+                }
+            }
+            return View(test); //???????????????????
         }
 
         // GET: Tests/Create
@@ -88,7 +96,8 @@ namespace LearnLatin.Controllers
                     Created = DateTime.Now,
                     Creator = user,
                     Editor = user,
-                    Modified = DateTime.Now
+                    Modified = DateTime.Now,
+                    NumOfTasks = 0
                 };
 
                 this._context.Add(test);

@@ -43,6 +43,9 @@ namespace LearnLatin.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("NumOfTasks")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
@@ -72,6 +75,9 @@ namespace LearnLatin.Data.Migrations
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("NumInQueue")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("TestId")
                         .HasColumnType("uniqueidentifier");
