@@ -38,11 +38,13 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach (var item in Model.Tests)
+                        {
                         <tr>
                             <td>
-                                Тема
+                                @item.Name
                                 <a class="btn btn-primary text-center mr-3"
-                                   asp-area="" asp-controller="Tests" asp-action="Start" asp-route-id="460354c3-3497-4e33-84aa-fd246bdfeeac">
+                                   asp-area="" asp-controller="Tests" asp-action="Start" asp-route-id="@item.Id">
                                     Пройти тест
                                 </a>
                             </td>
@@ -52,26 +54,7 @@
                                 </div>
                             </td>
                         </tr>
-                        <tr>
-                            <td>
-                                Тема
-                            </td>
-                            <td class="align-middle">
-                                <div class="progress mt-1">
-                                    <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Тема
-                            </td>
-                            <td class="align-middle">
-                                <div class="progress mt-1">
-                                    <div class="progress-bar" role="progressbar" style="width: 42%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                </div>
-                            </td>
-                        </tr>
+                        }
                     </tbody>
                 </table>
             </div>

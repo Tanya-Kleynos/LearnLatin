@@ -5,17 +5,17 @@ using System.Threading.Tasks;
 
 namespace LearnLatin.Models
 {
-    public class Test
+    public class TrueOutOfFalseTask
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        public String Name { get; set; }
         public String Description { get; set; }
         public DateTime Created { get; set; }
         public DateTime Modified { get; set; }
         public ApplicationUser Creator { get; set; }
         public ApplicationUser Editor { get; set; }
-        public ICollection<TrueOutOfFalseTask> Tasks { get; set; }
-        public ICollection<InputTask> InputTasks { get; set; }
-        public Int32? NumOfTasks { get; set; }
+        public Test Test { get; set; }
+        public Int32 NumInQueue { get; set; }
+        public ICollection<TrueOutOfFalseAnswer> Answers { get; set; }
+       
     }
 }

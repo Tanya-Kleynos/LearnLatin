@@ -1,5 +1,6 @@
 ﻿using LearnLatin.Data;
 using LearnLatin.Models;
+using LearnLatin.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -27,6 +28,11 @@ namespace LearnLatin.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(this.HttpContext.User);
+            var tests = await _context.Tests.ToListAsync();
+            var personalAreaModel = new PersonalAreaViewModel
+            {
+                Tests = tests
+            };
             /*var games = await _context.Games
                 .Include(g => g.Level)
                 .Include(g => g.Player)
@@ -44,7 +50,7 @@ namespace LearnLatin.Controllers
                 Games = games,
                 Trainings = trainings
             };*/
-            return View();
+            return View(personalAreaModel);
         }
         public async Task<IActionResult> TrainingResults(Guid trainingId)
         {

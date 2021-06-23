@@ -38,6 +38,7 @@ namespace LearnLatin.Controllers
 
             var test = await _context.Tests
                 .Include(t => t.Tasks)
+                .Include(t => t.InputTasks)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (test == null)
             {
@@ -66,7 +67,7 @@ namespace LearnLatin.Controllers
             {
                 if (item.NumInQueue == 1)
                 {
-                    return RedirectToAction("Display", "TestTasks", new { id = item.Id });
+                    return RedirectToAction("Display", "TrueOutOfFalseTasks", new { id = item.Id });
                 }
             }
             return View(test); //???????????????????
@@ -190,6 +191,87 @@ namespace LearnLatin.Controllers
         private bool TestExists(Guid id)
         {
             return _context.Tests.Any(e => e.Id == id);
+        }
+
+        public async Task<IActionResult> SaveResults(Guid? testId, Guid taskId)
+        {
+            if (testId == null)
+            {
+                return NotFound();
+            }
+
+            var test = await _context.Tests
+                .Include(t => t.InputTasks)
+                .Include(t => t.Tasks)
+                .FirstOrDefaultAsync(m => m.Id == testId);
+
+            if (test == null)
+            {
+                return NotFound();
+            }
+
+            if (taskId == null)
+            {
+                return NotFound();
+            }
+            var trueOutOfFalseTask = await _context.TrueOutOfFalseTasks
+                .FirstOrDefaultAsync(m => m.Id == taskId);
+
+            var inputTask = await _context.InputTasks
+                .FirstOrDefaultAsync(m => m.Id == taskId);
+
+
+
+            if (trueOutOfFalseTask != null)
+            {
+                if (trueOutOfFalseTask.NumInQueue == trueOutOfFalseTask.Test.NumOfTasks) // если таск последний в очереди
+                {
+                    return RedirectToAction("Index", "PersonalArea"); // подумать куда идти после окончания теста
+                }
+                else // если таск не последний в очереди
+                {
+                    foreach (var item in test.Tasks) // ищем следующий по очереди таск
+                    {
+                        if (item.NumInQueue == (trueOutOfFalseTask.NumInQueue + 1))
+                        {
+                            return RedirectToAction("Display", "TrueOutOfFalseTasks", new { id = item.Id });
+                        }
+                    }
+                    foreach (var item in test.InputTasks) // ищем следующий по очереди таск
+                    {
+                        if (item.NumInQueue == (trueOutOfFalseTask.NumInQueue + 1))
+                        {
+                            return RedirectToAction("Display", "InputTasks", new { id = item.Id });
+                        }
+                    }
+                }
+            }
+            else if (inputTask != null)
+            {
+                if (inputTask.NumInQueue == inputTask.Test.NumOfTasks) // если таск последний в очереди
+                {
+                    return RedirectToAction("Index", "PersonalArea"); // подумать куда идти после окончания теста
+                }
+                else // если таск не последний в очереди
+                {
+                    foreach (var item in inputTask.Test.Tasks) // ищем следующий по очереди таск
+                    {
+                        if (item.NumInQueue == (inputTask.NumInQueue + 1))
+                        {
+                            return RedirectToAction("Display", "InputTasks", new { id = item.Id });
+                        }
+                    }
+                    foreach (var item in test.Tasks) // ищем следующий по очереди таск
+                    {
+                        if (item.NumInQueue == (trueOutOfFalseTask.NumInQueue + 1))
+                        {
+                            return RedirectToAction("Display", "TrueOutOfFalseTasks", new { id = item.Id });
+                        }
+                    }
+                }
+            }
+            
+            return View(); //??????????????????
         }
     }
 }

@@ -7,30 +7,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LearnLatin.Data;
 using LearnLatin.Models;
-using Microsoft.AspNetCore.Identity;
 using LearnLatin.Models.CreateViewModels;
+using Microsoft.AspNetCore.Identity;
 using LearnLatin.Models.EditViewModels;
 using LearnLatin.Models.ViewModels;
 
 namespace LearnLatin.Controllers
 {
-    public class TestTasksController : Controller
+    public class TrueOutOfFalseTasksController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
-        public TestTasksController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public TrueOutOfFalseTasksController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        // GET: TestTasks
+        // GET: TrueOutOfFalseTasks
         public async Task<IActionResult> Index()
         {
-            return View(await _context.TestTasks.ToListAsync());
+            return View(await _context.TrueOutOfFalseTasks.ToListAsync());
         }
 
-        // GET: TestTasks/Details/5
+        // GET: TrueOutOfFalseTasks/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {
             if (id == null)
@@ -38,16 +38,14 @@ namespace LearnLatin.Controllers
                 return NotFound();
             }
 
-            var testTask = await _context.TestTasks
-                .Include(t => t.Test)
+            var trueOutOfFalseTask = await _context.TrueOutOfFalseTasks
                 .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (testTask == null)
+            if (trueOutOfFalseTask == null)
             {
                 return NotFound();
             }
 
-            return View(testTask);
+            return View(trueOutOfFalseTask);
         }
 
         public async Task<IActionResult> Display(Guid? id)
@@ -57,8 +55,9 @@ namespace LearnLatin.Controllers
                 return NotFound();
             }
 
-            var task = await _context.TestTasks
+            var task = await _context.TrueOutOfFalseTasks
                 .Include(t => t.Test)
+                .Include(t => t.Answers)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (task == null)
@@ -66,15 +65,18 @@ namespace LearnLatin.Controllers
                 return NotFound();
             }
 
-            var taskView = new TestTaskViewModel
+            var taskView = new TaskViewModel
             {
                 Id = task.Id,
-                Description = task.Description
+                TestId = task.Test.Id,
+                Description = task.Description,
+                Answers = task.Answers
             };
 
-            return View(taskView); 
+            return View(taskView);
         }
-        // GET: TestTasks/Create
+
+        // GET: TrueOutOfFalseTasks/Create
         public async Task<IActionResult> Create(Guid testId)
         {
             if (testId == null)
@@ -91,15 +93,15 @@ namespace LearnLatin.Controllers
             }
 
             this.ViewBag.Test = test;
-            return this.View(new TestTaskCreateViewModel());
+            return this.View(new TaskCreateViewModel());
         }
 
-        // POST: TestTasks/Create
+        // POST: TrueOutOfFalseTasks/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Guid testId, TestTaskCreateViewModel model)
+        public async Task<IActionResult> Create(Guid testId, TaskCreateViewModel model)
         {
             if (testId == null)
             {
@@ -119,7 +121,7 @@ namespace LearnLatin.Controllers
 
             if (this.ModelState.IsValid)
             {
-                var testTask = new TestTask
+                var task = new TrueOutOfFalseTask
                 {
                     Test = test,
                     Description = model.Description,
@@ -129,23 +131,23 @@ namespace LearnLatin.Controllers
 
                 if (test.NumOfTasks == null)
                 {
-                    testTask.NumInQueue = 1;
+                    task.NumInQueue = 1;
                     test.NumOfTasks = 1;
                 }
                 else
                 {
-                    testTask.NumInQueue = (Int32)test.NumOfTasks + 1;
+                    task.NumInQueue = (Int32)test.NumOfTasks + 1;
                     test.NumOfTasks++;
                 }
-                this._context.Add(testTask);
+                this._context.Add(task);
                 await this._context.SaveChangesAsync();
-                return this.RedirectToAction("Details", "Tests", new { id = test.Id });
+                return this.RedirectToAction("Details", "Tests", new { id = task.Test.Id });
             }
             this.ViewBag.Test = test;
             return View(model);
         }
 
-        // GET: TestTasks/Edit/5
+        // GET: TrueOutOfFalseTasks/Edit/5
         public async Task<IActionResult> Edit(Guid? testId)
         {
             if (testId == null)
@@ -153,33 +155,36 @@ namespace LearnLatin.Controllers
                 return NotFound();
             }
 
-            var testTask = await _context.TestTasks.FindAsync(testId);
-            if (testTask == null)
+            var task = await this._context.TrueOutOfFalseTasks
+                .SingleOrDefaultAsync(x => x.Id == testId);
+
+            if (task == null)
             {
                 return NotFound();
             }
-            var model = new TestTaskEditViewModel
+            var model = new TaskEditViewModel
             {
-                Description = testTask.Description
+                Description = task.Description
             };
-            return View(testTask);
+            return View(task);
         }
 
-        // POST: TestTasks/Edit/5
+        // POST: TrueOutOfFalseTasks/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid testId, TestTaskEditViewModel model)
+        public async Task<IActionResult> Edit(Guid testId, TaskEditViewModel model)
         {
             if (testId == null)
             {
                 return NotFound();
             }
 
-            var testTask = await _context.TestTasks.FindAsync(testId);
+            var task = await this._context.TrueOutOfFalseTasks
+                .SingleOrDefaultAsync(x => x.Id == testId);
 
-            if (testTask == null)
+            if (task == null)
             {
                 return NotFound();
             }
@@ -189,18 +194,18 @@ namespace LearnLatin.Controllers
             if (ModelState.IsValid)
             {
 
-                testTask.Description = model.Description;
-                testTask.Modified = DateTime.Now;
-                testTask.Editor = user;
+                task.Description = model.Description;
+                task.Modified = DateTime.Now;
+                task.Editor = user;
 
                 await this._context.SaveChangesAsync();
                 /*return this.RedirectToAction("Index", "ForumCategories", new { forumCategoryId = forumCategory.Id });*/
             }
-            this.ViewBag.Test = testTask.Test;
-            return View(testTask);
+            this.ViewBag.Test = task.Test;
+            return View(task);
         }
 
-        // GET: TestTasks/Delete/5
+        // GET: TrueOutOfFalseTasks/Delete/5
         public async Task<IActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -208,68 +213,31 @@ namespace LearnLatin.Controllers
                 return NotFound();
             }
 
-            var testTask = await _context.TestTasks
+            var trueOutOfFalseTask = await _context.TrueOutOfFalseTasks
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (testTask == null)
+            if (trueOutOfFalseTask == null)
             {
                 return NotFound();
             }
 
-            return View(testTask);
+            return View(trueOutOfFalseTask);
         }
 
-        // POST: TestTasks/Delete/5
+        // POST: TrueOutOfFalseTasks/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var testTask = await _context.TestTasks.FindAsync(id);
-            _context.TestTasks.Remove(testTask);
+            var trueOutOfFalseTask = await _context.TrueOutOfFalseTasks.FindAsync(id);
+            _context.TrueOutOfFalseTasks.Remove(trueOutOfFalseTask);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TestTaskExists(Guid id)
+        private bool TrueOutOfFalseTaskExists(Guid id)
         {
-            return _context.TestTasks.Any(e => e.Id == id);
+            return _context.TrueOutOfFalseTasks.Any(e => e.Id == id);
         }
 
-        
-        public async Task<IActionResult> SaveResults(Guid? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var task = await _context.TestTasks
-                .Include(t => t.Test)
-                .ThenInclude(t => t.Tasks)
-                .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (task == null)
-            {
-                return NotFound();
-            }
-
-            if (task.Test != null)
-            {
-                if (task.NumInQueue == task.Test.NumOfTasks) // если таск последний в очереди
-                {
-                    return RedirectToAction("Index", "PersonalArea"); // подумать куда идти после окончания теста
-                }
-                else // если таск не последний в очереди
-                {
-                    foreach (var item in task.Test.Tasks) // ищем следующий по очереди таск
-                    {
-                        if (item.NumInQueue == (task.NumInQueue + 1))
-                        {
-                            return RedirectToAction("Display", "TestTasks", new { id = item.Id });
-                        }
-                    }
-                }
-            }
-            return View(task); //??????????????????
-        }
     }
 }

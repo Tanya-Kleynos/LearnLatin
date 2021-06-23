@@ -20,6 +20,10 @@
     <Compile Remove="Data\Migrations\20210420075257_AddLatinWords.Designer.cs" />
     <Compile Remove="Data\Migrations\20210420080108_AddWordAttachments.cs" />
     <Compile Remove="Data\Migrations\20210420080108_AddWordAttachments.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210621074608_AddTasks.cs" />
+    <Compile Remove="Data\Migrations\20210621074608_AddTasks.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210621083021_AddTests.cs" />
+    <Compile Remove="Data\Migrations\20210621083021_AddTests.Designer.cs" />
     <Compile Remove="Data\Migrations\20210621093753_AddUpdate.cs" />
     <Compile Remove="Data\Migrations\20210621093753_AddUpdate.Designer.cs" />
     <Compile Remove="Data\Migrations\20210621093819_AddTestUpdate.cs" />
@@ -28,6 +32,46 @@
     <Compile Remove="Data\Migrations\20210622142104_AddTaskUpdate.Designer.cs" />
     <Compile Remove="Data\Migrations\20210622142408_AddTestAndTaskUpdate.cs" />
     <Compile Remove="Data\Migrations\20210622142408_AddTestAndTaskUpdate.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622142552_AddTestAndTaskUpdate.cs" />
+    <Compile Remove="Data\Migrations\20210622142552_AddTestAndTaskUpdate.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622154852_AddAnswers.cs" />
+    <Compile Remove="Data\Migrations\20210622154852_AddAnswers.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622160230_AddAnswers.cs" />
+    <Compile Remove="Data\Migrations\20210622160230_AddAnswers.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622163717_AddAnswers.cs" />
+    <Compile Remove="Data\Migrations\20210622163717_AddAnswers.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622163859_AddAnswers.cs" />
+    <Compile Remove="Data\Migrations\20210622163859_AddAnswers.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622180632_AddAnswers.cs" />
+    <Compile Remove="Data\Migrations\20210622180632_AddAnswers.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622185524_AddAnswers.cs" />
+    <Compile Remove="Data\Migrations\20210622185524_AddAnswers.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622190650_AddAnswers.cs" />
+    <Compile Remove="Data\Migrations\20210622190650_AddAnswers.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622191404_AddAnswers.cs" />
+    <Compile Remove="Data\Migrations\20210622191404_AddAnswers.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622192622_AddAnswers.cs" />
+    <Compile Remove="Data\Migrations\20210622192622_AddAnswers.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622193633_AddAnswers.cs" />
+    <Compile Remove="Data\Migrations\20210622193633_AddAnswers.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622194438_Test.cs" />
+    <Compile Remove="Data\Migrations\20210622194438_Test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622194725_Test.cs" />
+    <Compile Remove="Data\Migrations\20210622194725_Test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622195718_Test.cs" />
+    <Compile Remove="Data\Migrations\20210622195718_Test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210622195932_Test.cs" />
+    <Compile Remove="Data\Migrations\20210622195932_Test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210623095746_Test.cs" />
+    <Compile Remove="Data\Migrations\20210623095746_Test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210623100216_Test.cs" />
+    <Compile Remove="Data\Migrations\20210623100216_Test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210623100759_Test.cs" />
+    <Compile Remove="Data\Migrations\20210623100759_Test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210623101354_Test.cs" />
+    <Compile Remove="Data\Migrations\20210623101354_Test.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210623104917_AddAnswers.cs" />
+    <Compile Remove="Data\Migrations\20210623104917_AddAnswers.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

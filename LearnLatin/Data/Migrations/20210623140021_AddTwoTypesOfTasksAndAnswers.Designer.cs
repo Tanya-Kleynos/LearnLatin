@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnLatin.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210621083021_AddTests")]
-    partial class AddTests
+    [Migration("20210623140021_AddTwoTypesOfTasksAndAnswers")]
+    partial class AddTwoTypesOfTasksAndAnswers
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,79 @@ namespace LearnLatin.Data.Migrations
                 .HasAnnotation("ProductVersion", "3.1.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("LearnLatin.Models.InputAnswer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AnsValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EditorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("TaskId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("EditorId");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("InputAnswers");
+                });
+
+            modelBuilder.Entity("LearnLatin.Models.InputTask", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EditorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("NumInQueue")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("TestId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("EditorId");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("InputTasks");
+                });
 
             modelBuilder.Entity("LearnLatin.Models.Test", b =>
                 {
@@ -45,6 +118,9 @@ namespace LearnLatin.Data.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("NumOfTasks")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
@@ -54,7 +130,45 @@ namespace LearnLatin.Data.Migrations
                     b.ToTable("Tests");
                 });
 
-            modelBuilder.Entity("LearnLatin.Models.TestTask", b =>
+            modelBuilder.Entity("LearnLatin.Models.TrueOutOfFalseAnswer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AnsValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("EditorId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsTrue")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("Modified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("TaskId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
+
+                    b.HasIndex("EditorId");
+
+                    b.HasIndex("TaskId");
+
+                    b.ToTable("TrueOutOfFalseAnswers");
+                });
+
+            modelBuilder.Entity("LearnLatin.Models.TrueOutOfFalseTask", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -75,13 +189,21 @@ namespace LearnLatin.Data.Migrations
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("NumInQueue")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("TestId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
 
                     b.HasIndex("EditorId");
 
-                    b.ToTable("TestTasks");
+                    b.HasIndex("TestId");
+
+                    b.ToTable("TrueOutOfFalseTasks");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -293,6 +415,36 @@ namespace LearnLatin.Data.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
+            modelBuilder.Entity("LearnLatin.Models.InputAnswer", b =>
+                {
+                    b.HasOne("LearnLatin.Models.ApplicationUser", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId");
+
+                    b.HasOne("LearnLatin.Models.ApplicationUser", "Editor")
+                        .WithMany()
+                        .HasForeignKey("EditorId");
+
+                    b.HasOne("LearnLatin.Models.InputTask", "Task")
+                        .WithMany("Answers")
+                        .HasForeignKey("TaskId");
+                });
+
+            modelBuilder.Entity("LearnLatin.Models.InputTask", b =>
+                {
+                    b.HasOne("LearnLatin.Models.ApplicationUser", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId");
+
+                    b.HasOne("LearnLatin.Models.ApplicationUser", "Editor")
+                        .WithMany()
+                        .HasForeignKey("EditorId");
+
+                    b.HasOne("LearnLatin.Models.Test", "Test")
+                        .WithMany()
+                        .HasForeignKey("TestId");
+                });
+
             modelBuilder.Entity("LearnLatin.Models.Test", b =>
                 {
                     b.HasOne("LearnLatin.Models.ApplicationUser", "Creator")
@@ -304,7 +456,7 @@ namespace LearnLatin.Data.Migrations
                         .HasForeignKey("EditorId");
                 });
 
-            modelBuilder.Entity("LearnLatin.Models.TestTask", b =>
+            modelBuilder.Entity("LearnLatin.Models.TrueOutOfFalseAnswer", b =>
                 {
                     b.HasOne("LearnLatin.Models.ApplicationUser", "Creator")
                         .WithMany()
@@ -313,6 +465,25 @@ namespace LearnLatin.Data.Migrations
                     b.HasOne("LearnLatin.Models.ApplicationUser", "Editor")
                         .WithMany()
                         .HasForeignKey("EditorId");
+
+                    b.HasOne("LearnLatin.Models.TrueOutOfFalseTask", "Task")
+                        .WithMany("Answers")
+                        .HasForeignKey("TaskId");
+                });
+
+            modelBuilder.Entity("LearnLatin.Models.TrueOutOfFalseTask", b =>
+                {
+                    b.HasOne("LearnLatin.Models.ApplicationUser", "Creator")
+                        .WithMany()
+                        .HasForeignKey("CreatorId");
+
+                    b.HasOne("LearnLatin.Models.ApplicationUser", "Editor")
+                        .WithMany()
+                        .HasForeignKey("EditorId");
+
+                    b.HasOne("LearnLatin.Models.Test", "Test")
+                        .WithMany("Tasks")
+                        .HasForeignKey("TestId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
