@@ -1,0 +1,92 @@
+﻿@model LearnLatin.Models.Test
+
+<div class="row">
+    <div class="col-12 h-100 d-flex flex-column justify-content-center">
+        <a class="align-self-center mb-2" style="font-size: 20px;">Ваш результат: @Model.NumOfRightAnswers / @Model.NumOfTasks</a>
+        <div style="height: 100%; overflow-x: auto"
+             class="container d-flex flex-column text-black">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            Вопрос
+                        </th>
+                        <th>
+                            Ответ
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 1; i <= Model.NumOfTasks; i++)
+                    {
+                        @foreach (var item in Model.Tasks)
+                        {
+                            @if (item.NumInQueue == i)
+                            {
+                                <tr>
+                                    <td>
+                                        Вопрос @item.NumInQueue : @item.Description
+                                    </td>
+                                    <td>
+                                        @if (item.IsAnsweredRight)
+                                        {
+                                            <a style="color: green"> Правильно</a>
+                                            <br />
+                                            foreach (var ans in item.Answers)
+                                            {
+                                                @if (ans.IsTrue)
+                                                {
+                                                    <a style="color: green">@ans.AnsValue</a>
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <a style="color: red"> Неправильно</a>
+                                            <br />
+                                            foreach (var ans in item.Answers)
+                                            {
+                                                @if (ans.IsTrue)
+                                                {
+                                                    <a style="color: green">Правильный ответ: @ans.AnsValue</a>
+                                                }
+                                            }
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        @foreach (var item in Model.InputTasks)
+                        {
+                            @if (item.NumInQueue == i)
+                            {
+                                <tr>
+                                    <td>
+                                        Вопрос @item.NumInQueue : @item.Description
+                                    </td>
+                                    <td>
+                                        @if (item.IsAnsweredRight)
+                                        {
+                                            <a style="color: green"> Правильно</a>
+                                            <br />
+                                        }
+                                        else
+                                        {
+                                            <a style="color: red"> Неправильно</a>
+                                            <br />
+                                        }
+                                        <a>Возможные ответы:</a>
+                                        @foreach (var ans in item.Answers)
+                                        {
+                                            <a>@ans.AnsValue</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

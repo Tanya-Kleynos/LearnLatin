@@ -16,6 +16,7 @@ namespace LearnLatin.Models
         public Test Test { get; set; }
         public Int32 NumInQueue { get; set; }
         public ICollection<InputAnswer> Answers { get; set; }
-       
+        public Boolean IsAnsweredRight { get; set; }
+
     }
 }

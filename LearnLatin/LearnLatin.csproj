@@ -72,6 +72,10 @@
     <Compile Remove="Data\Migrations\20210623101354_Test.Designer.cs" />
     <Compile Remove="Data\Migrations\20210623104917_AddAnswers.cs" />
     <Compile Remove="Data\Migrations\20210623104917_AddAnswers.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210624151026_AddUserTests.cs" />
+    <Compile Remove="Data\Migrations\20210624151026_AddUserTests.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210624153239_AddTest.cs" />
+    <Compile Remove="Data\Migrations\20210624153239_AddTest.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

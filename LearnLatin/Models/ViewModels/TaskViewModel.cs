@@ -11,6 +11,7 @@ namespace LearnLatin.Models.ViewModels
         public Guid Id { get; set; }
         public Guid TestId { get; set; }
         public String Description { get; set; }
+        public String UserAnswer { get; set; }
         public ICollection<TrueOutOfFalseAnswer> Answers { get; set; }
     }
 }

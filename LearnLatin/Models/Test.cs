@@ -17,5 +17,7 @@ namespace LearnLatin.Models
         public ICollection<TrueOutOfFalseTask> Tasks { get; set; }
         public ICollection<InputTask> InputTasks { get; set; }
         public Int32? NumOfTasks { get; set; }
+        public Int32? NumOfRightAnswers { get; set; }
+        public Boolean IsNotForTheFirstTime { get; set; }
     }
 }

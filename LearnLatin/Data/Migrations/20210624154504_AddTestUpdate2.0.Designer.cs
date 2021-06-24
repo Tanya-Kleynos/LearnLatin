@@ -4,14 +4,16 @@ using LearnLatin.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LearnLatin.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210624154504_AddTestUpdate2.0")]
+    partial class AddTestUpdate20
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,9 +73,6 @@ namespace LearnLatin.Data.Migrations
 
                     b.Property<string>("EditorId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsAnsweredRight")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
@@ -192,9 +191,6 @@ namespace LearnLatin.Data.Migrations
 
                     b.Property<string>("EditorId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsAnsweredRight")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
