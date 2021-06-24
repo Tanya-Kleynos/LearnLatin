@@ -13,11 +13,6 @@ namespace LearnLatin.Controllers
             return View();
         }
 
-        public IActionResult TrainingsAll()
-        {
-            return this.View();
-        }
-
         public IActionResult VocabularyUser()
         {
             return this.View();
@@ -34,6 +29,18 @@ namespace LearnLatin.Controllers
         }
 
         public IActionResult Training3()
+        {
+            return this.View();
+        }
+
+
+
+        public IActionResult TestsForAdmin()
+        {
+            return this.View();
+        }
+
+        public IActionResult TestsForUser()
         {
             return this.View();
         }

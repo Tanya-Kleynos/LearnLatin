@@ -1,0 +1,160 @@
+﻿@*@model IEnumerable<LearnLatin.Models.>*@
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Тесты</h1>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p><a asp-action="Create">Создать тест</a></p>
+}
+
+<div class="panel panel-default">
+    <table class="table table-striped">
+        <tbody>
+            @*Вывод через цикл с сортировкой:
+        @foreach (var item in Model.OrderByDescending(x => x.Date))
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" style="font-size: 1.3em">@item.Name</a><br />
+                    @item.Description
+                </td>
+                @if (item.Films.Count() > 0)
+                 {
+                    <td style="width: 150px">
+                        @item.Films.Count() фильмов
+                    </td>
+                 }
+                 else
+                 {
+                    <td style="width: 150px">
+                        0 фильмов
+                    </td>
+                 }
+                <td style="width: 220px">
+                    @item.Creator.UserName<br />
+                    @item.Date
+                </td>
+            </tr>
+        }*@
+
+            @*Демонстрация:*@
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                    <img style="max-width: 200px" src="/img/testLogo (1).jpg" alt="Image" />
+                </td>
+                <td>
+                    <h3><a>Тест по таблице Менделеева</a><br /></h3>
+                    Данный тест поможет вам отработать знания таблицы Менделеева<br />
+                    <div class="p-2"><i>Создан: smeh.ru 03-05-2021 11:16 PM</i></div>
+                </td>
+
+                <td style="width: 150px">
+                    5 заданий
+                </td>
+
+                <td style="width: 220px">
+                    <i>
+                        Редактировано:
+                        bestadmin.ru<br />
+                        07-07-2021
+                    </i>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                    <img style="max-width: 200px" src="/img/testLogo (2).jpg" alt="Image" />
+                </td>
+                <td>
+                    <h3><a>Тест по таблице Менделеева</a><br /></h3>
+                    Данный тест поможет вам отработать знания таблицы Менделеева<br />
+                    <div class="p-2"><i>Создан: smeh.ru 03-05-2021 11:16 PM</i></div>
+                </td>
+
+                <td style="width: 150px">
+                    5 заданий
+                </td>
+
+                <td style="width: 220px">
+                    <i>
+                        Редактировано:
+                        bestadmin.ru<br />
+                        07-07-2021
+                    </i>
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                    <img style="max-width: 200px" src="/img/testLogo (3).jpg" alt="Image" />
+                </td>
+                <td>
+                    <h3><a>Тест по таблице Менделеева</a><br /></h3>
+                    Данный тест поможет вам отработать знания таблицы Менделеева<br />
+                    <div class="p-2"><i>Создан: smeh.ru 03-05-2021 11:16 PM</i></div>
+                </td>
+
+                <td style="width: 150px">
+                    5 заданий
+                </td>
+
+                <td style="width: 220px">
+                    <i>
+                        Редактировано:
+                        bestadmin.ru<br />
+                        07-07-2021
+                    </i>
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                    <img style="max-width: 200px" src="/img/testLogo (4).jpg" alt="Image" />
+                </td>
+                <td>
+                    <h3><a>Тест по таблице Менделеева</a><br /></h3>
+                    Данный тест поможет вам отработать знания таблицы Менделеева<br />
+                    <div class="p-2"><i>Создан: smeh.ru 03-05-2021 11:16 PM</i></div>
+                </td>
+
+                <td style="width: 150px">
+                    5 заданий
+                </td>
+
+                <td style="width: 220px">
+                    <i>
+                        Редактировано:
+                        bestadmin.ru<br />
+                        07-07-2021
+                    </i>
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align: middle" class="text-center">
+                    <img style="max-width: 200px" src="/img/testLogo (5).jpg" alt="Image" />
+                </td>
+                <td>
+                    <h3><a>Тест по таблице Менделеева</a><br /></h3>
+                    Данный тест поможет вам отработать знания таблицы Менделеева<br />
+                    <div class="p-2"><i>Создан: smeh.ru 03-05-2021 11:16 PM</i></div>
+                </td>
+
+                <td style="width: 150px">
+                    5 заданий
+                </td>
+
+                <td style="width: 220px">
+                    <i>
+                        Редактировано:
+                        bestadmin.ru<br />
+                        07-07-2021
+                    </i>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>
