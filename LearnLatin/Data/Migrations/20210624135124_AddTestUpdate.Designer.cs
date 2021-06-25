@@ -4,14 +4,16 @@ using LearnLatin.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LearnLatin.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210624135124_AddTestUpdate")]
+    partial class AddTestUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,9 +74,6 @@ namespace LearnLatin.Data.Migrations
                     b.Property<string>("EditorId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("IsAnsweredRight")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
 
@@ -112,9 +111,6 @@ namespace LearnLatin.Data.Migrations
 
                     b.Property<string>("EditorId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("IsNotForTheFirstTime")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
@@ -193,9 +189,6 @@ namespace LearnLatin.Data.Migrations
                     b.Property<string>("EditorId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("IsAnsweredRight")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("Modified")
                         .HasColumnType("datetime2");
 
@@ -214,32 +207,6 @@ namespace LearnLatin.Data.Migrations
                     b.HasIndex("TestId");
 
                     b.ToTable("TrueOutOfFalseTasks");
-                });
-
-            modelBuilder.Entity("LearnLatin.Models.UserTest", b =>
-                {
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("TestId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int?>("BestResult")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("LastResult")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId1")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("UserId", "TestId");
-
-                    b.HasIndex("TestId");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("UserTests");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -520,19 +487,6 @@ namespace LearnLatin.Data.Migrations
                     b.HasOne("LearnLatin.Models.Test", "Test")
                         .WithMany("Tasks")
                         .HasForeignKey("TestId");
-                });
-
-            modelBuilder.Entity("LearnLatin.Models.UserTest", b =>
-                {
-                    b.HasOne("LearnLatin.Models.Test", "Test")
-                        .WithMany()
-                        .HasForeignKey("TestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LearnLatin.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

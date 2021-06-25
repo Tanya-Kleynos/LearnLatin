@@ -56,12 +56,24 @@ namespace LearnLatin.Controllers
 
             var test = await _context.Tests
                 .Include(t => t.Tasks)
+                .Include(t => t.InputTasks)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (test == null || test.NumOfTasks == null)
             {
                 return NotFound();
             }
+
+            test.NumOfRightAnswers = null;
+            foreach (var item in test.Tasks)
+            {
+                item.IsAnsweredRight = false;
+            }
+            foreach (var item in test.InputTasks)
+            {
+                item.IsAnsweredRight = false;
+            }
+            await this._context.SaveChangesAsync();
 
             foreach (var item in test.Tasks)
             {
@@ -70,7 +82,15 @@ namespace LearnLatin.Controllers
                     return RedirectToAction("Display", "TrueOutOfFalseTasks", new { id = item.Id });
                 }
             }
-            return View(test); //???????????????????
+            foreach (var item in test.InputTasks)
+            {
+                if (item.NumInQueue == 1)
+                {
+                    return RedirectToAction("Display", "InputTasks", new { id = item.Id });
+                }
+            }
+
+            return View();
         }
 
         // GET: Tests/Create
@@ -193,7 +213,7 @@ namespace LearnLatin.Controllers
             return _context.Tests.Any(e => e.Id == id);
         }
 
-        public async Task<IActionResult> SaveResults(Guid? testId, Guid taskId)
+        public async Task<IActionResult> SaveResults(Guid? testId, Guid taskId, Guid userAnswerId, String userInputAnswer)
         {
             if (testId == null)
             {
@@ -218,18 +238,48 @@ namespace LearnLatin.Controllers
                 .FirstOrDefaultAsync(m => m.Id == taskId);
 
             var inputTask = await _context.InputTasks
+                .Include(i => i.Answers)
                 .FirstOrDefaultAsync(m => m.Id == taskId);
 
 
 
             if (trueOutOfFalseTask != null)
             {
+                var userAnswer = await _context.TrueOutOfFalseAnswers
+                    .FirstOrDefaultAsync(m => m.Id == userAnswerId);
+
+                if (userAnswer.IsTrue && trueOutOfFalseTask.NumInQueue == 1)
+                {
+                    test.NumOfRightAnswers = 1;
+                    trueOutOfFalseTask.IsAnsweredRight = true;
+                }
+                else if (userAnswer.IsTrue)
+                {
+                    test.NumOfRightAnswers++;
+                    trueOutOfFalseTask.IsAnsweredRight = true;
+                }
+
+                await _context.SaveChangesAsync();
+
                 if (trueOutOfFalseTask.NumInQueue == trueOutOfFalseTask.Test.NumOfTasks) // если таск последний в очереди
                 {
-                    return RedirectToAction("Index", "PersonalArea"); // подумать куда идти после окончания теста
+                    // if for the first time
+                    if (test.IsNotForTheFirstTime)
+                    {
+                        return RedirectToAction("Edit", "UserTests", new { testId = test.Id });
+                    }
+                    else
+                    {
+                        return RedirectToAction("Create", "UserTests", new { testId = test.Id });
+                    }
+                   
+                    // return RedirectToAction("Edit", "UserTests", new { testId = test.Id });
+
+                    //return RedirectToAction("Index", "PersonalArea"); // подумать куда идти после окончания теста
                 }
                 else // если таск не последний в очереди
                 {
+
                     foreach (var item in test.Tasks) // ищем следующий по очереди таск
                     {
                         if (item.NumInQueue == (trueOutOfFalseTask.NumInQueue + 1))
@@ -248,13 +298,37 @@ namespace LearnLatin.Controllers
             }
             else if (inputTask != null)
             {
+                foreach (var item in inputTask.Answers)
+                {
+                    if (item.AnsValue == userInputAnswer && inputTask.NumInQueue == 1)
+                    {
+                        test.NumOfRightAnswers = 1;
+                        inputTask.IsAnsweredRight = true;
+                        break;
+                    }
+                    else if (item.AnsValue == userInputAnswer)
+                    {
+                        test.NumOfRightAnswers++;
+                        inputTask.IsAnsweredRight = true;
+                        break;
+                    }
+                }
+                await _context.SaveChangesAsync();
+
                 if (inputTask.NumInQueue == inputTask.Test.NumOfTasks) // если таск последний в очереди
                 {
-                    return RedirectToAction("Index", "PersonalArea"); // подумать куда идти после окончания теста
+                    if (test.IsNotForTheFirstTime)
+                    {
+                        return RedirectToAction("Edit", "UserTests", new { testId = test.Id });
+                    }
+                    else
+                    {
+                        return RedirectToAction("Create", "UserTests", new { testId = test.Id });
+                    }
                 }
                 else // если таск не последний в очереди
                 {
-                    foreach (var item in inputTask.Test.Tasks) // ищем следующий по очереди таск
+                    foreach (var item in test.InputTasks) // ищем следующий по очереди таск
                     {
                         if (item.NumInQueue == (inputTask.NumInQueue + 1))
                         {
@@ -263,7 +337,7 @@ namespace LearnLatin.Controllers
                     }
                     foreach (var item in test.Tasks) // ищем следующий по очереди таск
                     {
-                        if (item.NumInQueue == (trueOutOfFalseTask.NumInQueue + 1))
+                        if (item.NumInQueue == (inputTask.NumInQueue + 1))
                         {
                             return RedirectToAction("Display", "TrueOutOfFalseTasks", new { id = item.Id });
                         }

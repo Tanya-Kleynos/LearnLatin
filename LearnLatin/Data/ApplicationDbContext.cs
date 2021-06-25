@@ -18,9 +18,12 @@ namespace LearnLatin.Data
         public DbSet<TrueOutOfFalseAnswer> TrueOutOfFalseAnswers { get; set; }
         public DbSet<InputAnswer> InputAnswers { get; set; }
         public DbSet<Test> Tests { get; set; } 
+        public DbSet<UserTest> UserTests { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Entity<UserTest>()
+                .HasKey(x => new { x.UserId, x.TestId });
         }
     }
 }
