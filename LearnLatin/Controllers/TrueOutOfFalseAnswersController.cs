@@ -34,11 +34,16 @@ namespace LearnLatin.Controllers
                 .Where(a => a.Task.Id == taskId)
                 .ToListAsync();
 
+            var task = await this._context.TrueOutOfFalseTasks
+                .Include(t => t.Test)
+                .SingleOrDefaultAsync(x => x.Id == taskId);
+
             if (answers == null)
             {
                 return this.NotFound();
             }
-
+            this.ViewBag.TaskId = taskId;
+            this.ViewBag.Test = task.Test;
             return View(answers);
         }
 
@@ -51,12 +56,13 @@ namespace LearnLatin.Controllers
             }
 
             var trueOutOfFalseAnswer = await _context.TrueOutOfFalseAnswers
+                .Include(a => a.Task)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (trueOutOfFalseAnswer == null)
             {
                 return NotFound();
             }
-
+            ViewBag.Task = trueOutOfFalseAnswer.Task;
             return View(trueOutOfFalseAnswer);
         }
 
@@ -69,13 +75,14 @@ namespace LearnLatin.Controllers
             }
 
             var task = await this._context.TrueOutOfFalseTasks
+                .Include(t => t.Test)
                 .SingleOrDefaultAsync(x => x.Id == taskId);
 
             if (task == null)
             {
                 return this.NotFound();
             }
-
+            ViewBag.Test = task.Test;
             this.ViewBag.Task = task;
             return this.View(new TrueOutOfFalseAnswerCreateViewModel());
         }
@@ -132,11 +139,14 @@ namespace LearnLatin.Controllers
                 return NotFound();
             }
 
-            var trueOutOfFalseAnswer = await _context.TrueOutOfFalseAnswers.FindAsync(id);
+            var trueOutOfFalseAnswer = await _context.TrueOutOfFalseAnswers
+                .Include(a => a.Task)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (trueOutOfFalseAnswer == null)
             {
                 return NotFound();
             }
+            ViewBag.Task = trueOutOfFalseAnswer.Task;
             return View(trueOutOfFalseAnswer);
         }
 
@@ -184,12 +194,13 @@ namespace LearnLatin.Controllers
             }
 
             var trueOutOfFalseAnswer = await _context.TrueOutOfFalseAnswers
+                .Include(a => a.Task)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (trueOutOfFalseAnswer == null)
             {
                 return NotFound();
             }
-
+            ViewBag.Task = trueOutOfFalseAnswer.Task;
             return View(trueOutOfFalseAnswer);
         }
 

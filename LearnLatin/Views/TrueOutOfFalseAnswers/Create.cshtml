@@ -31,7 +31,8 @@
 </div>
 
 <div>
-    <a asp-action="Index">Назад</a>
+    <a asp-action="Index" asp-route-taskId="@ViewBag.Task.Id">К списку ответов</a> | 
+    <a asp-action="Details" asp-controller="Tests" asp-route-id="@ViewBag.Test.Id">К тесту</a>
 </div>
 
 @section Scripts {

@@ -39,12 +39,14 @@ namespace LearnLatin.Controllers
             }
 
             var trueOutOfFalseTask = await _context.TrueOutOfFalseTasks
+                .Include(t => t.Test)
+                .Include(t => t.Creator)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (trueOutOfFalseTask == null)
             {
                 return NotFound();
             }
-
+            ViewBag.Test = trueOutOfFalseTask.Test;
             return View(trueOutOfFalseTask);
         }
 
@@ -148,15 +150,17 @@ namespace LearnLatin.Controllers
         }
 
         // GET: TrueOutOfFalseTasks/Edit/5
-        public async Task<IActionResult> Edit(Guid? testId)
+        public async Task<IActionResult> Edit(Guid? id)
         {
-            if (testId == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var task = await this._context.TrueOutOfFalseTasks
-                .SingleOrDefaultAsync(x => x.Id == testId);
+                .Include(t => t.Test)
+                .Include(t => t.Creator)
+                .SingleOrDefaultAsync(x => x.Id == id);
 
             if (task == null)
             {
@@ -166,6 +170,7 @@ namespace LearnLatin.Controllers
             {
                 Description = task.Description
             };
+            ViewBag.Test = task.Test;
             return View(task);
         }
 
@@ -214,12 +219,14 @@ namespace LearnLatin.Controllers
             }
 
             var trueOutOfFalseTask = await _context.TrueOutOfFalseTasks
+                .Include(t => t.Test)
+                .Include(t => t.Creator)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (trueOutOfFalseTask == null)
             {
                 return NotFound();
             }
-
+            ViewBag.Test = trueOutOfFalseTask.Test;
             return View(trueOutOfFalseTask);
         }
 
