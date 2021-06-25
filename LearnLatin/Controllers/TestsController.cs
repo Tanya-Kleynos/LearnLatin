@@ -279,6 +279,7 @@ namespace LearnLatin.Controllers
                 }
                 else // если таск не последний в очереди
                 {
+
                     foreach (var item in test.Tasks) // ищем следующий по очереди таск
                     {
                         if (item.NumInQueue == (trueOutOfFalseTask.NumInQueue + 1))
@@ -327,7 +328,7 @@ namespace LearnLatin.Controllers
                 }
                 else // если таск не последний в очереди
                 {
-                    foreach (var item in inputTask.Test.Tasks) // ищем следующий по очереди таск
+                    foreach (var item in test.InputTasks) // ищем следующий по очереди таск
                     {
                         if (item.NumInQueue == (inputTask.NumInQueue + 1))
                         {
@@ -336,7 +337,7 @@ namespace LearnLatin.Controllers
                     }
                     foreach (var item in test.Tasks) // ищем следующий по очереди таск
                     {
-                        if (item.NumInQueue == (trueOutOfFalseTask.NumInQueue + 1))
+                        if (item.NumInQueue == (inputTask.NumInQueue + 1))
                         {
                             return RedirectToAction("Display", "TrueOutOfFalseTasks", new { id = item.Id });
                         }
