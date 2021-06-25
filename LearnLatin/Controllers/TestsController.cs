@@ -56,12 +56,36 @@ namespace LearnLatin.Controllers
 
             var test = await _context.Tests
                 .Include(t => t.Tasks)
+                .ThenInclude(t => t.Answers)
                 .Include(t => t.InputTasks)
+                .ThenInclude(t => t.Answers)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (test == null || test.NumOfTasks == null)
             {
                 return NotFound();
+            }
+
+            int taskCounter = 0;
+            foreach (var item in test.Tasks)
+            {
+                if (item.Answers.Count > 1)
+                {
+                    taskCounter++;
+                }
+            }
+            int inTaskCounter = 0;
+            foreach (var item in test.InputTasks)
+            {
+                if (item.Answers.Count > 0)
+                {
+                    inTaskCounter++;
+                }
+            }
+
+            if (taskCounter != test.Tasks.Count || inTaskCounter != test.InputTasks.Count)
+            {
+                return RedirectToAction("Index", "PersonalArea");
             }
 
             test.NumOfRightAnswers = null;
