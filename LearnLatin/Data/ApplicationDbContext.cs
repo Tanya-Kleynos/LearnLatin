@@ -24,6 +24,10 @@ namespace LearnLatin.Data
             base.OnModelCreating(builder);
             builder.Entity<UserTest>()
                 .HasKey(x => new { x.UserId, x.TestId });
+            builder.Entity<TrueOutOfFalseTask>().HasMany(x => x.Answers).WithOne(t => t.Task).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<InputTask>().HasMany(x => x.Answers).WithOne(t => t.Task).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Test>().HasMany(x => x.Tasks).WithOne(t => t.Test).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Test>().HasMany(x => x.InputTasks).WithOne(t => t.Test).OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
