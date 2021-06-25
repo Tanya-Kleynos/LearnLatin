@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LearnLatin.Models.TestTask>
+﻿@model IEnumerable<LearnLatin.Models.TrueOutOfFalseTask>
 
 @{
     ViewData["Title"] = "Index";
@@ -21,6 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Modified)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumInQueue)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,6 +38,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Modified)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumInQueue)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

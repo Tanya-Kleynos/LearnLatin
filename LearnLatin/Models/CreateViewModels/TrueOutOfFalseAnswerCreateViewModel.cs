@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace LearnLatin.Models.CreateViewModels
 {
-    public class TestCreateViewModel
+    public class TrueOutOfFalseAnswerCreateViewModel
     {
         [Required]
-        public String Name { get; set; }
-        public String Description { get; set; }
+        public String AnsValue { get; set; }
+        [Required]
+        public Boolean IsTrue { get; set; }
     }
 }

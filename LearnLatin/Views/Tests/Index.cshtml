@@ -1,65 +1,63 @@
 ﻿@model IEnumerable<LearnLatin.Models.Test>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Тесты (для редакторов)";
 }
 
-<h1>Index</h1>
+<h1>Тесты</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Creator)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Editor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Modified)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Creator.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Editor.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modified)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+@if (User.Identity.IsAuthenticated) @*поставить на роль*@
+{
+    <p><a asp-action="Create">Создать тест</a></p>
 }
-    </tbody>
-</table>
+
+<div class="panel panel-default">
+    <table class="table table-striped">
+        <tbody>
+                @foreach (var item in Model.OrderByDescending(x => x.Created))
+                {
+                    <tr>
+                        @*picture*@
+                        <td style="vertical-align: middle" class="text-center">
+                             <img style="max-width: 200px" src="/img/testLogo (1).jpg" alt="Image" />
+                        </td>
+                        <td>
+                            <h3><a asp-action="Details" asp-route-id="@item.Id" style="font-size: 1.3em">@item.Name</a><br /></h3>
+                            @item.Description<br />
+                            <div class="p-2"><i>Создан: не-сохранён @*@item.Creator.UserName*@ @item.Created</i></div>
+                        </td>
+
+                        @if (item.NumOfTasks > 0)
+                         {
+                            <td class="align-middle" style="min-width: 90px;">
+                                @item.NumOfTasks тасков
+                            </td>
+                         }
+                         else
+                         {
+                            <td class="align-middle" style="min-width: 90px;">
+                                0 тасков
+                            </td>
+                         }
+
+                        <td>
+                            <i>
+                                Редактировано:<br />
+                                не-сохранён @*@item.Editor.UserName*@<br />
+                                @item.Modified
+                            </i>
+                        </td>
+ 
+                        <td class="align-middle"  style="min-width: 70px;">
+                            <a asp-action="Edit" asp-route-id="@item.Id">
+                                <i data-toggle="tooltip" data-title="Редактировать" class="fas fa-pencil-alt fa-lg text-muted hand_cursor"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id">
+                                <i data-toggle="tooltip" data-title="Удалить" class="fas fa-trash-alt fa-lg text-danger hand_cursor"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+        </tbody>
+    </table>
+</div>

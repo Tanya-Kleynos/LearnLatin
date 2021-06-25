@@ -1,0 +1,41 @@
+﻿@model IEnumerable<LearnLatin.Models.TrueOutOfFalseAnswer>
+
+@{
+    ViewData["Title"] = "Ответы";
+}
+
+<h1>Ответы</h1>
+
+<p>
+    <a asp-action="Create">Добавить ответ</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Ответ
+            </th>
+            <th>
+                Правильный
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.AnsValue)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsTrue)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Редактировать</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Подробнее</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

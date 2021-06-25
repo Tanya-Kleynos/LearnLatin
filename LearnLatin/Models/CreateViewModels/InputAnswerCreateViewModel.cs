@@ -4,12 +4,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace LearnLatin.Models.EditViewModels
+namespace LearnLatin.Models.CreateViewModels
 {
-    public class TestEditViewModel
+    public class InputAnswerCreateViewModel
     {
         [Required]
-        public String Name { get; set; }
-        public String Description { get; set; }
+        public String AnsValue { get; set; }
     }
 }
