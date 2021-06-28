@@ -229,7 +229,10 @@ namespace LearnLatin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
-            var inputTask = await _context.InputTasks.FindAsync(id);
+            var inputTask = await _context.InputTasks
+                .Include(t => t.Test)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            inputTask.Test.NumOfTasks--;
             _context.InputTasks.Remove(inputTask);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
