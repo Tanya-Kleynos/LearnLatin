@@ -147,42 +147,44 @@ namespace LearnLatin.Controllers
                 return NotFound();
             }
             ViewBag.Task = inputAnswer.Task;
-            return View(inputAnswer);
+            var model = new InputAnswerCreateViewModel
+            {
+                AnsValue = inputAnswer.AnsValue
+            };
+            return View(model);
         }
 
         // POST: InputAnswers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Created,Modified,AnsValue")] InputAnswer inputAnswer)
+        public async Task<IActionResult> Edit(Guid id, InputAnswerCreateViewModel model)
         {
-            if (id != inputAnswer.Id)
+            if (id == null)
             {
                 return NotFound();
             }
 
+            var ans = await _context.InputAnswers
+                .Include(a => a.Task)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (ans == null)
+            {
+                return NotFound();
+            }
+
+            var user = await this._userManager.GetUserAsync(this.HttpContext.User);
+
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(inputAnswer);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!InputAnswerExists(inputAnswer.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                ans.AnsValue = model.AnsValue;
+                ans.Modified = DateTime.Now;
+                ans.Editor = user;
+
+                await this._context.SaveChangesAsync();
+                return RedirectToAction("Index", "InputAnswers", new { taskId = ans.Task.Id });
             }
-            return View(inputAnswer);
+            return View(model);
         }
 
         // GET: InputAnswers/Delete/5

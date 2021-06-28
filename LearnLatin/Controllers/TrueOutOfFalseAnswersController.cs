@@ -147,17 +147,20 @@ namespace LearnLatin.Controllers
                 return NotFound();
             }
             ViewBag.Task = trueOutOfFalseAnswer.Task;
-            return View(trueOutOfFalseAnswer);
+            var model = new TrueOutOfFalseAnswerCreateViewModel
+            {
+                AnsValue = trueOutOfFalseAnswer.AnsValue,
+                IsTrue = trueOutOfFalseAnswer.IsTrue
+            };
+            return View(model);
         }
 
         // POST: TrueOutOfFalseAnswers/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Created,Modified,AnsValue,IsTrue")] TrueOutOfFalseAnswer trueOutOfFalseAnswer)
+        public async Task<IActionResult> Edit(Guid id, TrueOutOfFalseAnswerCreateViewModel model)
         {
-            if (id != trueOutOfFalseAnswer.Id)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -165,28 +168,24 @@ namespace LearnLatin.Controllers
                 .Include(a => a.Task)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
+            if(ans == null)
+            {
+                return NotFound();
+            }
+
+            var user = await this._userManager.GetUserAsync(this.HttpContext.User);
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(trueOutOfFalseAnswer);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TrueOutOfFalseAnswerExists(trueOutOfFalseAnswer.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+                ans.AnsValue = model.AnsValue;
+                ans.IsTrue = model.IsTrue;
+                ans.Modified = DateTime.Now;
+                ans.Editor = user;
+
+                await this._context.SaveChangesAsync();
                 return RedirectToAction("Index", "TrueOutOfFalseAnswers", new { taskId = ans.Task.Id });
             }
-            return View(trueOutOfFalseAnswer);
+            return View(model);
         }
 
         // GET: TrueOutOfFalseAnswers/Delete/5

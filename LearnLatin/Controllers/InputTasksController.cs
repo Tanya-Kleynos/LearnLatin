@@ -10,6 +10,7 @@ using LearnLatin.Models;
 using LearnLatin.Models.CreateViewModels;
 using Microsoft.AspNetCore.Identity;
 using LearnLatin.Models.ViewModels;
+using LearnLatin.Models.EditViewModels;
 
 namespace LearnLatin.Controllers
 {
@@ -159,12 +160,15 @@ namespace LearnLatin.Controllers
 
             var inputTask = await _context.InputTasks
                 .Include(t => t.Test)
-                .Include(t => t.Creator)
                 .SingleOrDefaultAsync(x => x.Id == id);
             if (inputTask == null)
             {
                 return NotFound();
             }
+            var model = new TaskEditViewModel
+            {
+                Description = inputTask.Description
+            };
             ViewBag.Task = inputTask;
             ViewBag.Test = inputTask.Test;
             return View(inputTask);
@@ -175,34 +179,36 @@ namespace LearnLatin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Description,Created,Modified,NumInQueue")] InputTask inputTask)
+        public async Task<IActionResult> Edit(Guid id, TaskEditViewModel model)
         {
-            if (id != inputTask.Id)
+            if (id == null)
             {
                 return NotFound();
             }
 
+            var task = await this._context.InputTasks
+                .Include(x => x.Test)
+                .Include(x => x.Creator)
+                .SingleOrDefaultAsync(x => x.Id == id);
+
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            var user = await this._userManager.GetUserAsync(this.HttpContext.User);
+
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(inputTask);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!InputTaskExists(inputTask.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                task.Description = model.Description;
+                task.Modified = DateTime.Now;
+                task.Editor = user;
+
+                await this._context.SaveChangesAsync();
+                return this.RedirectToAction("Details", "Tests", new { id = task.Test.Id });
             }
-            return View(inputTask);
+            this.ViewBag.Test = task.Test;
+            return View(model);
         }
 
         // GET: InputTasks/Delete/5
@@ -238,11 +244,6 @@ namespace LearnLatin.Controllers
             _context.InputTasks.Remove(inputTask);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool InputTaskExists(Guid id)
-        {
-            return _context.InputTasks.Any(e => e.Id == id);
         }
     }
 }

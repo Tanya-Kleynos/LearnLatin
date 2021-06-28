@@ -41,6 +41,7 @@ namespace LearnLatin.Controllers
             var trueOutOfFalseTask = await _context.TrueOutOfFalseTasks
                 .Include(t => t.Test)
                 .Include(t => t.Creator)
+                .Include(t => t.Editor)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (trueOutOfFalseTask == null)
             {
@@ -159,7 +160,6 @@ namespace LearnLatin.Controllers
 
             var task = await this._context.TrueOutOfFalseTasks
                 .Include(t => t.Test)
-                .Include(t => t.Creator)
                 .SingleOrDefaultAsync(x => x.Id == id);
 
             if (task == null)
