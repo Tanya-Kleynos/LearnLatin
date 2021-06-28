@@ -29,8 +29,8 @@
                 <p> @Model.Description</p>
             }
             <p><b>Количество тасков:</b> @Model.NumOfTasks</p>
-            <p><b>Добавлено пользователем:</b> @*@Model.Creator.UserName*@ несохраненный-пользователь-1 (@Model.Created)</p>
-            <p><i><b>Изменено пользователем:</b> @*@Model.Editor.UserName*@ несохраненный-пользователь-2 (@Model.Modified)</i></p>
+            <p><b>Добавлено пользователем:</b> @Model.Creator.UserName (@Model.Created)</p>
+            <p><i><b>Изменено пользователем:</b> @Model.Editor.UserName (@Model.Modified)</i></p>
         </div>
     </dl>
 

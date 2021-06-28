@@ -9,6 +9,7 @@ using LearnLatin.Data;
 using LearnLatin.Models;
 using Microsoft.AspNetCore.Identity;
 using LearnLatin.Models.CreateViewModels;
+using LearnLatin.Models.EditViewModels;
 
 namespace LearnLatin.Controllers
 {
@@ -25,7 +26,10 @@ namespace LearnLatin.Controllers
         // GET: Tests
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Tests.ToListAsync());
+            return View(await _context.Tests
+                .Include(t => t.Creator)
+                .Include(t => t.Editor)
+                .ToListAsync());
         }
 
         // GET: Tests/Details/5
@@ -37,8 +41,16 @@ namespace LearnLatin.Controllers
             }
 
             var test = await _context.Tests
+                .Include(t => t.Creator)
+                .Include(t => t.Editor)
                 .Include(t => t.Tasks)
+                .ThenInclude(x => x.Answers)
+                .Include(t => t.Tasks)
+                .ThenInclude(x => x.Creator)
                 .Include(t => t.InputTasks)
+                .ThenInclude(x => x.Answers)
+                .Include(t => t.InputTasks)
+                .ThenInclude(x => x.Creator)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (test == null)
             {
@@ -165,42 +177,45 @@ namespace LearnLatin.Controllers
             {
                 return NotFound();
             }
-            return View(test);
+            var model = new TestEditViewModel
+            {
+                Name = test.Name,
+                Description = test.Description
+            };
+            return View(model);
         }
 
         // POST: Tests/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Description,Created,Modified")] Test test)
+        public async Task<IActionResult> Edit(Guid id, TestEditViewModel model)
         {
-            if (id != test.Id)
+            if (id == null)
             {
                 return NotFound();
             }
 
+            var test = await _context.Tests
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (test == null)
+            {
+                return NotFound();
+            }
+
+            var user = await this._userManager.GetUserAsync(this.HttpContext.User);
+
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(test);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!TestExists(test.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                test.Name = model.Name;
+                test.Description = model.Description;
+                test.Modified = DateTime.Now;
+                test.Editor = user;
+
+                await this._context.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
-            return View(test);
+            return View(model);
         }
 
         // GET: Tests/Delete/5

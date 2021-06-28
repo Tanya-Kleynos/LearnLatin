@@ -31,8 +31,8 @@
                 <p> @Model.Description</p>
             }
             <p><b>Количество тасков:</b> @Model.NumOfTasks</p>
-            <p><b>Добавлено пользователем:</b> @*@Model.Creator.UserName*@ несохраненный-пользователь-1 (@Model.Created)</p>
-            <p><i><b>Изменено пользователем:</b> @*@Model.Editor.UserName*@ несохраненный-пользователь-2 (@Model.Modified)</i></p>
+            <p><b>Добавлено пользователем:</b> @Model.Creator.UserName (@Model.Created)</p>
+            <p><i><b>Изменено пользователем:</b> @Model.Editor.UserName (@Model.Modified)</i></p>
         </div>
     </dl>
 
@@ -57,7 +57,7 @@
                     <tr>
                         <td>
                             <b class="pl-2">@item.Description</b><br />
-                            <div class="pl-2"><i>Создан: не-сохранён @*@item.Creator.UserName*@ @item.Created</i></div>
+                            <div class="pl-2"><i>Создан: @item.Creator.UserName @item.Created</i></div>
                             <div class="pl-2 pt-2">
                                 <a asp-action="Details" asp-controller="TrueOutOfFalseTasks" asp-route-id="@item.Id">Подробнее</a><br />
                             </div>
@@ -104,7 +104,7 @@
                     <tr>
                         <td>
                             <b class="pl-2">@item.Description</b><br />
-                            <div class="pl-2"><i>Создан: не-сохранён @*@item.Creator.UserName*@ @item.Created</i></div>
+                            <div class="pl-2"><i>Создан: @item.Creator.UserName @item.Created</i></div>
                             <div class="pl-2 pt-2">
                                 <a asp-action="Details" asp-controller="InputTasks" asp-route-id="@item.Id">Подробнее</a>
                             </div>
