@@ -34,11 +34,16 @@ namespace LearnLatin.Controllers
                 .Where(a => a.Task.Id == taskId)
                 .ToListAsync();
 
+            var task = await this._context.InputTasks
+                .Include(t => t.Test)
+                .SingleOrDefaultAsync(x => x.Id == taskId);
+
             if (answers == null)
             {
                 return this.NotFound();
             }
-
+            this.ViewBag.TaskId = taskId;
+            this.ViewBag.Test = task.Test;
             return View(answers);
         }
 
@@ -51,12 +56,13 @@ namespace LearnLatin.Controllers
             }
 
             var inputAnswer = await _context.InputAnswers
+                .Include(a => a.Task)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (inputAnswer == null)
             {
                 return NotFound();
             }
-
+            ViewBag.Task = inputAnswer.Task;
             return View(inputAnswer);
         }
 
@@ -69,6 +75,7 @@ namespace LearnLatin.Controllers
             }
 
             var task = await this._context.InputTasks
+                .Include(t => t.Test)
                 .SingleOrDefaultAsync(x => x.Id == taskId);
 
             if (task == null)
@@ -76,7 +83,8 @@ namespace LearnLatin.Controllers
                 return this.NotFound();
             }
 
-            this.ViewBag.Task = task;
+            ViewBag.Test = task.Test;
+            ViewBag.Task = task;
             return this.View(new InputAnswerCreateViewModel());
         }
 
@@ -131,11 +139,14 @@ namespace LearnLatin.Controllers
                 return NotFound();
             }
 
-            var inputAnswer = await _context.InputAnswers.FindAsync(id);
+            var inputAnswer = await _context.InputAnswers
+                .Include(a => a.Task)
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (inputAnswer == null)
             {
                 return NotFound();
             }
+            ViewBag.Task = inputAnswer.Task;
             return View(inputAnswer);
         }
 
@@ -183,12 +194,13 @@ namespace LearnLatin.Controllers
             }
 
             var inputAnswer = await _context.InputAnswers
+                .Include(a => a.Task)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (inputAnswer == null)
             {
                 return NotFound();
             }
-
+            ViewBag.Task = inputAnswer.Task;
             return View(inputAnswer);
         }
 

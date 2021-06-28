@@ -1,106 +1,143 @@
 ﻿@model LearnLatin.Models.Test
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Детали теста";
 }
 
-<h1>Details</h1>
-
+<h1>Детали теста "@Model.Name"</h1>
 <div>
-    <h4>Test</h4>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
+    <a asp-action="Index">Назад</a>
+</div>
+<div>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Modified)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Modified)
-        </dd>
+        <div class="col-3">
+            @*@if (Model.PosterPath != null)
+                {
+                    <img class="w-100" src="@Model.PosterPath" alt="Image" />
+                }
+                else
+                {
+                    <img class="w-100" src="/posters/none.png" alt="Image" />
+                }*@
+            @* Пока что хардкод:*@
+            <img class="w-100" src="/img/testLogo (3).jpg" alt="Image" />
+        </div>
+        <div class="col-7">
+            @if (Model.Description != null)
+            {
+                <b>Описание:</b>
+                <p> @Model.Description</p>
+            }
+            <p><b>Количество тасков:</b> @Model.NumOfTasks</p>
+            <p><b>Добавлено пользователем:</b> @*@Model.Creator.UserName*@ несохраненный-пользователь-1 (@Model.Created)</p>
+            <p><i><b>Изменено пользователем:</b> @*@Model.Editor.UserName*@ несохраненный-пользователь-2 (@Model.Modified)</i></p>
+        </div>
     </dl>
+
+    <div>
+        <a class="btn btn-success" asp-controller="TrueOutOfFalseTasks" asp-action="Create" asp-route-testId="@Model.Id">Создать задание с выбором правильного ответа</a>
+        <a class="btn btn-info" asp-controller="InputTasks" asp-action="Create" asp-route-testId="@Model.Id">Создать задание с вводом ответа</a>
+    </div>
+
 </div>
-<div>
-    <h4>Tasks</h4>
+
+
+<div class="pt-5">
+    <h4>Таски</h4>
+    <p>Таски с выбором правильного ответа:</p>
     <hr />
-    @foreach (var item in Model.Tasks)
-    {
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => item.Description)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => item.Description)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => item.Created)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => item.Created)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => item.Modified)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => item.Modified)
-            </dd>
-            <dt class="col-sm-2">
-                <a asp-controller="TrueOutOfFalseAnswers" asp-action="Create" asp-route-taskId="@item.Id">Создать ответ с выбором правильного</a>
-            </dt>
-            <dd class="col-sm-10">
-                <a asp-controller="TrueOutOfFalseAnswers" asp-action="Index" asp-route-taskId="@item.Id">Ответы</a>
-            </dd>
-        </dl>
-    }
-    @foreach (var item in Model.InputTasks)
-    {
-        <dl class="row">
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => item.Description)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => item.Description)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => item.Created)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => item.Created)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => item.Modified)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => item.Modified)
-            </dd>
-            <dt class="col-sm-2">
-                <a asp-controller="InputAnswers" asp-action="Create" asp-route-taskId="@item.Id">Создать ответ</a>
-            </dt>
-            <dd class="col-sm-10">
-                <a asp-controller="InputAnswers" asp-action="Index" asp-route-taskId="@item.Id">Ответы</a>
-            </dd>
-        </dl>
-    }
+
+    <div class="panel panel-default">
+        <table class="table table-striped">
+            <tbody>
+                @foreach (var item in Model.Tasks)
+                {
+                    <tr>
+                        <td>
+                            <b class="pl-2">@item.Description</b><br />
+                            <div class="pl-2"><i>Создан: не-сохранён @*@item.Creator.UserName*@ @item.Created</i></div>
+                            <div class="pl-2 pt-2">
+                                <a asp-action="Details" asp-controller="TrueOutOfFalseTasks" asp-route-id="@item.Id">Подробнее</a><br />
+                            </div>
+                        </td>
+                        <td class="align-middle">
+                            <a asp-controller="TrueOutOfFalseAnswers" asp-action="Create" asp-route-taskId="@item.Id">Создать ответ</a><br />
+                            <a asp-controller="TrueOutOfFalseAnswers" asp-action="Index" asp-route-taskId="@item.Id">Список ответов</a>
+                        </td>
+                        @if (item.Answers != null)
+                        {
+                            <td class="align-middle" style="min-width: 90px;">
+                                @item.Answers.Count() ответов
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="align-middle" style="min-width: 90px;">
+                                0 ответов
+                            </td>
+                        }
+
+                        <td class="align-middle" style="min-width: 70px;">
+                            <a asp-action="Edit" asp-controller="TrueOutOfFalseTasks" asp-route-id="@item.Id">
+                                <i data-toggle="tooltip" data-title="Редактировать" class="fas fa-pencil-alt fa-lg text-muted hand_cursor"></i>
+                            </a>
+                            <a asp-action="Delete" asp-controller="TrueOutOfFalseTasks" asp-route-id="@item.Id">
+                                <i data-toggle="tooltip" data-title="Удалить" class="fas fa-trash-alt fa-lg text-danger hand_cursor"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+    <p>Таски с вводом правильного ответа:</p>
+    <hr />
+    <div class="panel panel-default">
+        <table class="table table-striped">
+            <tbody>
+                @foreach (var item in Model.InputTasks)
+                {
+                    <tr>
+                        <td>
+                            <b class="pl-2">@item.Description</b><br />
+                            <div class="pl-2"><i>Создан: не-сохранён @*@item.Creator.UserName*@ @item.Created</i></div>
+                            <div class="pl-2 pt-2">
+                                <a asp-action="Details" asp-controller="InputTasks" asp-route-id="@item.Id">Подробнее</a>
+                            </div>
+                        </td>
+                        <td class="align-middle">
+                            <a asp-controller="InputAnswers" asp-action="Create" asp-route-taskId="@item.Id">Создать ответ</a><br />
+                            <a asp-controller="InputAnswers" asp-action="Index" asp-route-taskId="@item.Id">Список ответов</a>
+                        </td>
+                        @if (item.Answers != null)
+                        {
+                            <td class="align-middle" style="min-width: 90px;">
+                                @item.Answers.Count() ответов
+                            </td>
+                        }
+                        else
+                        {
+                            <td class="align-middle" style="min-width: 90px;">
+                                0 ответов
+                            </td>
+                        }
+
+                        <td class="align-middle" style="min-width: 70px;">
+                            <a asp-action="Edit" asp-controller="InputTasks" asp-route-id="@item.Id">
+                                <i data-toggle="tooltip" data-title="Редактировать" class="fas fa-pencil-alt fa-lg text-muted hand_cursor"></i>
+                            </a>
+                            <a asp-action="Delete" asp-controller="InputTasks" asp-route-id="@item.Id">
+                                <i data-toggle="tooltip" data-title="Удалить" class="fas fa-trash-alt fa-lg text-danger hand_cursor"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-controller="TrueOutOfFalseTasks" asp-action="Create" asp-route-testId="@Model.Id">Создать задание с выбором правильного ответа</a> |
-    <a asp-controller="InputTasks" asp-action="Create" asp-route-testId="@Model.Id">Создать задание с вводом ответа</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+<a asp-action="Index">Назад</a>

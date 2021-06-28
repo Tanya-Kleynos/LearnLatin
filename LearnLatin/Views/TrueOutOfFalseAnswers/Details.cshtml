@@ -1,42 +1,52 @@
 ﻿@model LearnLatin.Models.TrueOutOfFalseAnswer
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Детали ответа";
 }
 
-<h1>Details</h1>
+<h1>Детали ответа</h1>
 
 <div>
-    <h4>TrueOutOfFalseAnswer</h4>
+    <h6>Тип таска: выбор правильного ответа</h6>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
+        <dt class="col-sm-2">
+            Ответ
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Modified)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Modified)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AnsValue)
-        </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.AnsValue)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsTrue)
+        <dt class="col-sm-2">
+            Правильный ответ
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsTrue)
+        <dd class="col-sm-10">
+            @*@Html.DisplayFor(model => model.IsTrue)*@
+            @if (@Model.IsTrue == true)
+            {
+                <p>Да</p>
+            }
+            else
+            {
+                <p>Нет</p>
+            }
+        </dd>
+        <dt class="col-sm-2">
+            Создано
+        </dt>
+        <dd class="col-sm-10">
+            @*@Model.Creator.UserName (@Model.Created)*@
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+        <dt class="col-sm-2">
+            Редактировано
+        </dt>
+        <dd class="col-sm-10">
+            @*@Model.Editor.UserName (@Model.Modified)*@
+            @Html.DisplayFor(model => model.Modified)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
+    <a asp-action="Index" asp-route-taskId="@ViewBag.Task.Id">Назад</a>
 </div>

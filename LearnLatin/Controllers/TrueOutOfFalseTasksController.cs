@@ -39,12 +39,14 @@ namespace LearnLatin.Controllers
             }
 
             var trueOutOfFalseTask = await _context.TrueOutOfFalseTasks
+                .Include(t => t.Test)
+                .Include(t => t.Creator)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (trueOutOfFalseTask == null)
             {
                 return NotFound();
             }
-
+            ViewBag.Test = trueOutOfFalseTask.Test; 
             return View(trueOutOfFalseTask);
         }
 
@@ -148,15 +150,17 @@ namespace LearnLatin.Controllers
         }
 
         // GET: TrueOutOfFalseTasks/Edit/5
-        public async Task<IActionResult> Edit(Guid? testId)
+        public async Task<IActionResult> Edit(Guid? id)
         {
-            if (testId == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var task = await this._context.TrueOutOfFalseTasks
-                .SingleOrDefaultAsync(x => x.Id == testId);
+                .Include(t => t.Test)
+                .Include(t => t.Creator)
+                .SingleOrDefaultAsync(x => x.Id == id);
 
             if (task == null)
             {
@@ -166,6 +170,8 @@ namespace LearnLatin.Controllers
             {
                 Description = task.Description
             };
+            ViewBag.Task = task;
+            ViewBag.Test = task.Test;
             return View(task);
         }
 
@@ -174,15 +180,16 @@ namespace LearnLatin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid testId, TaskEditViewModel model)
+        public async Task<IActionResult> Edit(Guid id, TaskEditViewModel model)
         {
-            if (testId == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var task = await this._context.TrueOutOfFalseTasks
-                .SingleOrDefaultAsync(x => x.Id == testId);
+                .Include(x => x.Test)
+                .SingleOrDefaultAsync(x => x.Id == id);
 
             if (task == null)
             {
@@ -193,13 +200,12 @@ namespace LearnLatin.Controllers
 
             if (ModelState.IsValid)
             {
-
                 task.Description = model.Description;
                 task.Modified = DateTime.Now;
                 task.Editor = user;
 
                 await this._context.SaveChangesAsync();
-                /*return this.RedirectToAction("Index", "ForumCategories", new { forumCategoryId = forumCategory.Id });*/
+                return this.RedirectToAction("Details", "Tests", new { id = task.Test.Id });
             }
             this.ViewBag.Test = task.Test;
             return View(task);
@@ -214,12 +220,15 @@ namespace LearnLatin.Controllers
             }
 
             var trueOutOfFalseTask = await _context.TrueOutOfFalseTasks
+                .Include(t => t.Test)
+                .Include(t => t.Creator)
+                .Include(t => t.Editor)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (trueOutOfFalseTask == null)
             {
                 return NotFound();
             }
-
+            ViewBag.Test = trueOutOfFalseTask.Test;
             return View(trueOutOfFalseTask);
         }
 
