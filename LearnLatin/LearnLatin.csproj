@@ -76,6 +76,18 @@
     <Compile Remove="Data\Migrations\20210624151026_AddUserTests.Designer.cs" />
     <Compile Remove="Data\Migrations\20210624153239_AddTest.cs" />
     <Compile Remove="Data\Migrations\20210624153239_AddTest.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210625134135_AddThemes.cs" />
+    <Compile Remove="Data\Migrations\20210625134135_AddThemes.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210625134345_AddThemes.cs" />
+    <Compile Remove="Data\Migrations\20210625134345_AddThemes.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210625134439_AddThemes.cs" />
+    <Compile Remove="Data\Migrations\20210625134439_AddThemes.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210628105137_AddTh.cs" />
+    <Compile Remove="Data\Migrations\20210628105137_AddTh.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210628105305_AddThemeDelete.cs" />
+    <Compile Remove="Data\Migrations\20210628105305_AddThemeDelete.Designer.cs" />
+    <Compile Remove="Data\Migrations\20210628105555_AddThemeDelete.cs" />
+    <Compile Remove="Data\Migrations\20210628105555_AddThemeDelete.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

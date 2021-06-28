@@ -4,14 +4,16 @@ using LearnLatin.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LearnLatin.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210628104034_AddThemes")]
+    partial class AddThemes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,28 +186,6 @@ namespace LearnLatin.Data.Migrations
                     b.HasIndex("ParentThemeId");
 
                     b.ToTable("Themes");
-                });
-
-            modelBuilder.Entity("LearnLatin.Models.TheoryBlock", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("ThemeId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ThemeId");
-
-                    b.ToTable("TheoryBlocks");
                 });
 
             modelBuilder.Entity("LearnLatin.Models.TrueOutOfFalseAnswer", b =>
@@ -581,15 +561,8 @@ namespace LearnLatin.Data.Migrations
                         .HasForeignKey("EditorId");
 
                     b.HasOne("LearnLatin.Models.Theme", "ParentTheme")
-                        .WithMany("Children")
+                        .WithMany()
                         .HasForeignKey("ParentThemeId");
-                });
-
-            modelBuilder.Entity("LearnLatin.Models.TheoryBlock", b =>
-                {
-                    b.HasOne("LearnLatin.Models.Theme", "Theme")
-                        .WithMany("TheoryBlocks")
-                        .HasForeignKey("ThemeId");
                 });
 
             modelBuilder.Entity("LearnLatin.Models.TrueOutOfFalseAnswer", b =>

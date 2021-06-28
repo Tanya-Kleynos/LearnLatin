@@ -63,7 +63,7 @@ namespace LearnLatin.Controllers
 
             if (test == null || test.NumOfTasks == null)
             {
-                return NotFound();
+                return RedirectToAction("Index", "PersonalArea");
             }
 
             int taskCounter = 0;

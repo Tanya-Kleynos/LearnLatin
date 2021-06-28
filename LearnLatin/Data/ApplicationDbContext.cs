@@ -19,6 +19,8 @@ namespace LearnLatin.Data
         public DbSet<InputAnswer> InputAnswers { get; set; }
         public DbSet<Test> Tests { get; set; } 
         public DbSet<UserTest> UserTests { get; set; }
+        public DbSet<Theme> Themes { get; set; }
+        public DbSet<TheoryBlock> TheoryBlocks { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -28,6 +30,8 @@ namespace LearnLatin.Data
             builder.Entity<InputTask>().HasMany(x => x.Answers).WithOne(t => t.Task).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<Test>().HasMany(x => x.Tasks).WithOne(t => t.Test).OnDelete(DeleteBehavior.Cascade);
             builder.Entity<Test>().HasMany(x => x.InputTasks).WithOne(t => t.Test).OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Theme>().HasMany(x => x.Tests).WithOne(t => t.Theme).OnDelete(DeleteBehavior.Cascade);
+           
         }
     }
 }

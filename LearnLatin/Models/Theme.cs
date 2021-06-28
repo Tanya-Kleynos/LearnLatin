@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace LearnLatin.Models
 {
-    public class Test
+    public class Theme
     {
         public Guid Id { get; set; } = Guid.NewGuid();
         public String Name { get; set; }
@@ -14,11 +14,12 @@ namespace LearnLatin.Models
         public DateTime Modified { get; set; }
         public ApplicationUser Creator { get; set; }
         public ApplicationUser Editor { get; set; }
-        public ICollection<TrueOutOfFalseTask> Tasks { get; set; }
-        public ICollection<InputTask> InputTasks { get; set; }
-        public Int32? NumOfTasks { get; set; }
-        public Int32? NumOfRightAnswers { get; set; }
-        public Boolean IsNotForTheFirstTime { get; set; }
-        public Theme Theme { get; set; }
+        public ICollection<Test> Tests { get; set; }
+        public Int32? NumOfTests { get; set; }
+        public Double? PercentageProgress { get; set; }
+        public Guid? ParentThemeId { get; set; }
+        public Theme ParentTheme { get; set; }
+        public ICollection<Theme> Children { get; set; }
+        public ICollection<TheoryBlock> TheoryBlocks { get; set; }
     }
 }
