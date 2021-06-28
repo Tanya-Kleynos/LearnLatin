@@ -21,6 +21,7 @@ namespace LearnLatin.Data
         public DbSet<UserTest> UserTests { get; set; }
         public DbSet<Theme> Themes { get; set; }
         public DbSet<TheoryBlock> TheoryBlocks { get; set; }
+        public DbSet<UserTheme> UserThemes { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -9,6 +9,10 @@
     <a asp-action="Edit" asp-route-id="@Model.Id">Редактировать</a> |
     <a asp-action="Index">Назад</a>
 </div>
+<a class="btn btn-primary text-center mr-3"
+       asp-area="" asp-controller="Tests" asp-action="Start" asp-route-id="@Model.Id">
+        Пройти тест
+    </a>
 <div>
     <hr />
     <dl class="row">

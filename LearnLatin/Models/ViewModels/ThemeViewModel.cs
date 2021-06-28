@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace LearnLatin.Models.ViewModels
 {
-    public class PersonalAreaViewModel
+    public class ThemeViewModel
     {
-        public ICollection<Theme> Themes { get; set; }
+        public Theme Theme { get; set; }
+        public UserTheme UserTheme { get; set; }
     }
 }
