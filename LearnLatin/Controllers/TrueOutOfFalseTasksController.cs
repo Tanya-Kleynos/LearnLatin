@@ -46,7 +46,7 @@ namespace LearnLatin.Controllers
             {
                 return NotFound();
             }
-            ViewBag.Test = trueOutOfFalseTask.Test;
+            ViewBag.Test = trueOutOfFalseTask.Test; 
             return View(trueOutOfFalseTask);
         }
 
@@ -187,6 +187,7 @@ namespace LearnLatin.Controllers
             }
 
             var task = await this._context.TrueOutOfFalseTasks
+                .Include(x => x.Test)
                 .SingleOrDefaultAsync(x => x.Id == testId);
 
             if (task == null)
@@ -204,7 +205,7 @@ namespace LearnLatin.Controllers
                 task.Editor = user;
 
                 await this._context.SaveChangesAsync();
-                /*return this.RedirectToAction("Index", "ForumCategories", new { forumCategoryId = forumCategory.Id });*/
+                return this.RedirectToAction("Details", "Tests", new { id = task.Test.Id });
             }
             this.ViewBag.Test = task.Test;
             return View(task);

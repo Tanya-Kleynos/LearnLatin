@@ -161,6 +161,10 @@ namespace LearnLatin.Controllers
             {
                 return NotFound();
             }
+            var ans = await _context.TrueOutOfFalseAnswers
+                .Include(a => a.Task)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
 
             if (ModelState.IsValid)
             {
@@ -180,7 +184,7 @@ namespace LearnLatin.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "TrueOutOfFalseAnswers", new { taskId = ans.Task.Id });
             }
             return View(trueOutOfFalseAnswer);
         }

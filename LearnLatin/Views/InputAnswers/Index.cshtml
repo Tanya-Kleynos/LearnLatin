@@ -7,7 +7,7 @@
 <h1>Ответы</h1>
 
 <p>
-    <a asp-action="Create">Добавить ответ</a>
+    <a asp-action="Create" asp-route-taskId="@ViewBag.TaskId">Добавить ответ</a>
 </p>
 <table class="table">
     <thead>
@@ -33,3 +33,5 @@
 }
     </tbody>
 </table>
+
+<a asp-action="Details" asp-controller="Tests" asp-route-id="@ViewBag.Test.Id">Назад</a>
