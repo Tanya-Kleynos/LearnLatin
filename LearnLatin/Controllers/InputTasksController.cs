@@ -126,7 +126,9 @@ namespace LearnLatin.Controllers
                     Test = test,
                     Description = model.Description,
                     Created = DateTime.Now,
-                    Creator = user
+                    Creator = user,
+                    Editor = user,
+                    Modified = DateTime.Now
                 };
 
                 if (test.NumOfTasks == null)

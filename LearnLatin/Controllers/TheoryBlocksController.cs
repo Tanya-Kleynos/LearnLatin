@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using LearnLatin.Data;
 using LearnLatin.Models;
+using LearnLatin.Models.CreateViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace LearnLatin.Controllers
 {
     public class TheoryBlocksController : Controller
     {
         private readonly ApplicationDbContext _context;
-
-        public TheoryBlocksController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public TheoryBlocksController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: TheoryBlocks
@@ -44,9 +47,21 @@ namespace LearnLatin.Controllers
         }
 
         // GET: TheoryBlocks/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(Guid? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var theme = await _context.Themes
+               .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (theme == null)
+            {
+                return NotFound();
+            }
+            ViewBag.Theme = theme;
+            return View(new TheoryBlockCreateViewModel());
         }
 
         // POST: TheoryBlocks/Create
@@ -54,16 +69,38 @@ namespace LearnLatin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Text")] TheoryBlock theoryBlock)
+        public async Task<IActionResult> Create(Guid? id, TheoryBlockCreateViewModel model)
         {
-            if (ModelState.IsValid)
+            if (id == null)
             {
-                theoryBlock.Id = Guid.NewGuid();
-                _context.Add(theoryBlock);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            return View(theoryBlock);
+            var theme = await _context.Themes
+               .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (theme == null)
+            {
+                return NotFound();
+            }
+            var user = await this._userManager.GetUserAsync(this.HttpContext.User);
+
+            if (this.ModelState.IsValid)
+            {
+                var theoryBlock = new TheoryBlock
+                {
+                    Name = model.Name,
+                    Text = model.Text,
+                    Theme = theme
+
+                };
+
+                this._context.Add(theoryBlock);
+                await this._context.SaveChangesAsync();
+                return this.RedirectToAction("Details", "Themes", new { id = theme.Id });
+            }
+
+            ViewBag.Theme = theme;
+            return View(model);
         }
 
         // GET: TheoryBlocks/Edit/5
