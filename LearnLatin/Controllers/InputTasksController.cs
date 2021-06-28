@@ -40,6 +40,7 @@ namespace LearnLatin.Controllers
             var inputTask = await _context.InputTasks
                 .Include(t => t.Test)
                 .Include(t => t.Creator)
+                .Include(t => t.Editor)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (inputTask == null)
             {
@@ -162,6 +163,7 @@ namespace LearnLatin.Controllers
             {
                 return NotFound();
             }
+            ViewBag.Task = inputTask;
             ViewBag.Test = inputTask.Test;
             return View(inputTask);
         }
@@ -212,6 +214,7 @@ namespace LearnLatin.Controllers
             var inputTask = await _context.InputTasks
                 .Include(t => t.Test)
                 .Include(t => t.Creator)
+                .Include(t => t.Editor)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (inputTask == null)
             {

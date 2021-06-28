@@ -170,6 +170,7 @@ namespace LearnLatin.Controllers
             {
                 Description = task.Description
             };
+            ViewBag.Task = task;
             ViewBag.Test = task.Test;
             return View(task);
         }
@@ -179,16 +180,16 @@ namespace LearnLatin.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Guid testId, TaskEditViewModel model)
+        public async Task<IActionResult> Edit(Guid id, TaskEditViewModel model)
         {
-            if (testId == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var task = await this._context.TrueOutOfFalseTasks
                 .Include(x => x.Test)
-                .SingleOrDefaultAsync(x => x.Id == testId);
+                .SingleOrDefaultAsync(x => x.Id == id);
 
             if (task == null)
             {
@@ -199,7 +200,6 @@ namespace LearnLatin.Controllers
 
             if (ModelState.IsValid)
             {
-
                 task.Description = model.Description;
                 task.Modified = DateTime.Now;
                 task.Editor = user;
@@ -222,6 +222,7 @@ namespace LearnLatin.Controllers
             var trueOutOfFalseTask = await _context.TrueOutOfFalseTasks
                 .Include(t => t.Test)
                 .Include(t => t.Creator)
+                .Include(t => t.Editor)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (trueOutOfFalseTask == null)
             {
