@@ -40,6 +40,7 @@ namespace LearnLatin.Controllers
 
             var theme = await _context.Themes
                 .Include(t => t.Tests)
+                .Include(t => t.TheoryBlocks)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (theme == null)
             {
@@ -59,7 +60,8 @@ namespace LearnLatin.Controllers
             var viewModel = new ThemeViewModel
             {
                 Theme = theme,
-                UserTheme = userTheme
+                UserTheme = userTheme,
+                TheoryBlocks = theme.TheoryBlocks
             };
             return View(viewModel);
         }

@@ -9,5 +9,6 @@ namespace LearnLatin.Models.ViewModels
     {
         public Theme Theme { get; set; }
         public UserTheme UserTheme { get; set; }
+        public ICollection<TheoryBlock> TheoryBlocks { get; set; }
     }
 }
