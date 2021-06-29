@@ -28,28 +28,12 @@ namespace LearnLatin.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(this.HttpContext.User);
-            var tests = await _context.Tests.ToListAsync();
+            var themes = await _context.Themes.ToListAsync();
             var personalAreaModel = new PersonalAreaViewModel
             {
-                Tests = tests
+                Themes = themes
             };
-            /*var games = await _context.Games
-                .Include(g => g.Level)
-                .Include(g => g.Player)
-                .Where(g => g.PlayerId == user.Id)
-                .ToListAsync();
 
-            var trainings = await _context.Trainings
-                .Include(g => g.Games)
-                .Include(g => g.Player)
-                .Where(g => g.PlayerId == user.Id)
-                .ToListAsync();
-
-            var personalAreaModel = new PersonalAreaViewModel
-            {
-                Games = games,
-                Trainings = trainings
-            };*/
             return View(personalAreaModel);
         }
         public async Task<IActionResult> TrainingResults(Guid trainingId)

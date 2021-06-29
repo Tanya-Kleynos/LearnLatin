@@ -274,10 +274,14 @@ namespace LearnLatin.Controllers
                 return NotFound();
             }
             var trueOutOfFalseTask = await _context.TrueOutOfFalseTasks
+                .Include(t => t.Test)
+                .ThenInclude(t => t.Theme)
                 .FirstOrDefaultAsync(m => m.Id == taskId);
 
             var inputTask = await _context.InputTasks
                 .Include(i => i.Answers)
+                .Include(t => t.Test)
+                .ThenInclude(t => t.Theme)
                 .FirstOrDefaultAsync(m => m.Id == taskId);
 
 

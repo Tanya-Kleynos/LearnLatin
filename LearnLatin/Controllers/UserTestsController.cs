@@ -25,48 +25,103 @@ namespace LearnLatin.Controllers
 
         public async Task<IActionResult> Create(Guid testId)
         {
-            var test = await _context.Tests
+            var curTest = await _context.Tests
+                .Include(t => t.Tasks)
+                .ThenInclude(t => t.Answers)
+                .Include(t => t.InputTasks)
+                .ThenInclude(t => t.Answers)
+                .Include(t => t.Theme)
                 .SingleOrDefaultAsync(x => x.Id == testId);
+
+            var tests = await _context.Tests
+                .Where(t => t.Theme.Id == curTest.Theme.Id)
+                .ToListAsync();
 
             var user = await this._userManager.GetUserAsync(this.HttpContext.User);
 
-            if (test != null)
+            var userTheme = await _context.UserThemes
+                .Where(u => u.User.Id == user.Id)
+                .Where(t => t.Theme.Id == curTest.Theme.Id)
+                .SingleOrDefaultAsync();
+
+            var allTasksCount = 0;
+            var rightTasksCount = 0;
+
+            foreach (var item in tests)
+            {
+                var userTest = await _context.UserTests
+                .Where(u => u.User.Id == user.Id)
+                .Where(t => t.Test.Id == item.Id)
+                .SingleOrDefaultAsync();
+
+                allTasksCount += (int)item.NumOfTasks;
+                if (userTest != null)
+                {
+                    rightTasksCount += (int)userTest.BestResult;
+                }
+                else
+                {
+                    rightTasksCount += (int)item.NumOfRightAnswers;
+                }
+            }
+            if (userTheme == null)
+            {
+                var usrTheme = new UserTheme
+                {
+                    User = user,
+                    Theme = curTest.Theme,
+                    Progress = (int?)Math.Round(((double)rightTasksCount / allTasksCount) * 100, 0)
+                };
+                _context.Add(usrTheme);
+            }
+            else
+            {
+                userTheme.Progress = (int?)Math.Round(((double)rightTasksCount / allTasksCount) * 100, 0);
+            }
+            await _context.SaveChangesAsync();
+
+            if (curTest != null)
             {
                 if (ModelState.IsValid)
                 {
                     var userTest = new UserTest
                     {
                         User = user,
-                        Test = test,
+                        Test = curTest,
                     };
-                    if (test.NumOfRightAnswers == null)
+                    if (curTest.NumOfRightAnswers == null)
                     {
                         userTest.LastResult = 0;
                         userTest.BestResult = 0;
                     }
                     else
                     {
-                        userTest.LastResult = (Int32)test.NumOfRightAnswers;
-                        userTest.BestResult = (Int32)test.NumOfRightAnswers;
+                        userTest.LastResult = (Int32)curTest.NumOfRightAnswers;
+                        userTest.BestResult = (Int32)curTest.NumOfRightAnswers;
                     }
                     _context.Add(userTest);
-                    test.IsNotForTheFirstTime = true;
+                    curTest.IsNotForTheFirstTime = true;
                     await _context.SaveChangesAsync();
                 }
             }
 
-            return RedirectToAction("Index", "PersonalArea");
+            return View("~/Views/Tests/Results.cshtml", curTest);
         }
 
         // GET: UserTests/Edit/5
         public async Task<IActionResult> Edit(Guid testId)
         {
-            var test = await _context.Tests
+            var curTest = await _context.Tests
                 .Include(t => t.Tasks)
                 .ThenInclude(t => t.Answers)
                 .Include(t => t.InputTasks)
                 .ThenInclude(t => t.Answers)
+                .Include(t => t.Theme)
                 .SingleOrDefaultAsync(x => x.Id == testId);
+
+            var tests = await _context.Tests
+                .Where(t => t.Theme.Id == curTest.Theme.Id)
+                .ToListAsync();
 
             var user = await this._userManager.GetUserAsync(this.HttpContext.User);
 
@@ -74,13 +129,17 @@ namespace LearnLatin.Controllers
                 .Where(u => u.User.Id == user.Id)
                 .Where(t => t.Test.Id == testId)
                 .SingleOrDefaultAsync();
-                //.SingleOrDefaultAsync(x => x.User.Id == user.Id);
+            var userTheme = await _context.UserThemes
+                .Where(u => u.User.Id == user.Id)
+                .Where(t => t.Theme.Id == curTest.Theme.Id)
+                .SingleOrDefaultAsync();
+            //.SingleOrDefaultAsync(x => x.User.Id == user.Id);
 
-            if (test != null)
+            if (curTest != null)
             {
                 if (ModelState.IsValid)
                 {
-                    userTest.LastResult = test.NumOfRightAnswers;
+                    userTest.LastResult = curTest.NumOfRightAnswers;
                     if (userTest.LastResult > userTest.BestResult)
                     {
                         userTest.BestResult = userTest.LastResult;
@@ -89,7 +148,45 @@ namespace LearnLatin.Controllers
                 }
             }
 
-            return View("~/Views/Tests/Results.cshtml", test);
+            var allTasksCount = 0;
+            var rightTasksCount = 0;
+
+            foreach (var item in tests)
+            {
+                var usrTest = await _context.UserTests
+                .Where(u => u.User.Id == user.Id)
+                .Where(t => t.Test.Id == item.Id)
+                .SingleOrDefaultAsync();
+
+                allTasksCount += (int)item.NumOfTasks;
+                if (usrTest != null)
+                {
+                    rightTasksCount += (int)usrTest.BestResult;
+                }
+                else
+                {
+                    rightTasksCount += (int)item.NumOfRightAnswers;
+                }
+            }
+
+            if (userTheme == null)
+            {
+                var usrTheme = new UserTheme
+                {
+                    User = user,
+                    Theme = curTest.Theme,
+                    Progress = (int?)Math.Round(((double)rightTasksCount / allTasksCount) * 100, 0)
+                };
+                _context.Add(usrTheme);
+            }
+            else
+            {
+                userTheme.Progress = (int?)Math.Round(((double)rightTasksCount / allTasksCount) * 100, 0);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return View("~/Views/Tests/Results.cshtml", curTest);
         }
 
         // GET: UserTests/Delete/5

@@ -7,6 +7,6 @@ namespace LearnLatin.Models.ViewModels
 {
     public class PersonalAreaViewModel
     {
-        public ICollection<Test> Tests { get; set; }
+        public ICollection<Theme> Themes { get; set; }
     }
 }

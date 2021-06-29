@@ -16,7 +16,6 @@ namespace LearnLatin.Models
         public ApplicationUser Editor { get; set; }
         public ICollection<Test> Tests { get; set; }
         public Int32? NumOfTests { get; set; }
-        public Double? PercentageProgress { get; set; }
         public Guid? ParentThemeId { get; set; }
         public Theme ParentTheme { get; set; }
         public ICollection<Theme> Children { get; set; }
