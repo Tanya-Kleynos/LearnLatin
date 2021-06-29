@@ -59,7 +59,7 @@ namespace LearnLatin.Controllers
                 {
                     rightTasksCount += (int)userTest.BestResult;
                 }
-                else
+                else if(item.NumOfRightAnswers != null)
                 {
                     rightTasksCount += (int)item.NumOfRightAnswers;
                 }
@@ -163,7 +163,7 @@ namespace LearnLatin.Controllers
                 {
                     rightTasksCount += (int)usrTest.BestResult;
                 }
-                else
+                else if(item.NumOfRightAnswers != null)
                 {
                     rightTasksCount += (int)item.NumOfRightAnswers;
                 }

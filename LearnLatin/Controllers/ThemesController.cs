@@ -27,7 +27,11 @@ namespace LearnLatin.Controllers
         // GET: Themes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Themes.ToListAsync());
+            return View(await _context.Themes
+                .Include(t => t.ParentTheme)
+                .Include(t => t.Creator)
+                .Include(t => t.Editor)
+                .ToListAsync());
         }
 
         // GET: Themes/Details/5
@@ -41,6 +45,8 @@ namespace LearnLatin.Controllers
             var theme = await _context.Themes
                 .Include(t => t.Tests)
                 .Include(t => t.TheoryBlocks)
+                .Include(x => x.Creator)
+                .Include(x => x.Editor)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (theme == null)
             {
@@ -53,10 +59,10 @@ namespace LearnLatin.Controllers
                 .Where(t => t.Theme.Id == theme.Id)
                 .SingleOrDefaultAsync();
 
-            if (userTheme == null)
+            /*if (userTheme == null)
             {
                 return NotFound();
-            }
+            }*/
             var viewModel = new ThemeViewModel
             {
                 Theme = theme,
@@ -162,6 +168,7 @@ namespace LearnLatin.Controllers
                     Modified = DateTime.Now,
                     NumOfTests = 0,
                 };
+
                 if (model.ParentThemeId != null)
                 {
                     theme.ParentThemeId = model.ParentThemeId;
@@ -191,7 +198,13 @@ namespace LearnLatin.Controllers
             {
                 return NotFound();
             }
-            return View(theme);
+            var model = new ThemeCreateViewModel
+            {
+                Name = theme.Name,
+                Description = theme.Description
+            };
+            ViewData["ThemeId"] = new SelectList(_context.Themes, "Id", "Name");
+            return View(model);
         }
 
         // POST: Themes/Edit/5
@@ -200,34 +213,36 @@ namespace LearnLatin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = ApplicationRoles.Administrators)]
-        public async Task<IActionResult> Edit(Guid id, [Bind("Id,Name,Description,Created,Modified,NumOfTests,PercentageProgress")] Theme theme)
+        public async Task<IActionResult> Edit(Guid id, ThemeCreateViewModel model)
         {
-            if (id != theme.Id)
+            if (id == null)
             {
                 return NotFound();
             }
 
+            var theme = await _context.Themes
+                /*.Include(a => a.Task)*/
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (theme == null)
+            {
+                return NotFound();
+            }
+
+            var user = await this._userManager.GetUserAsync(this.HttpContext.User);
+
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(theme);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ThemeExists(theme.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                theme.Name = model.Name;
+                theme.Description = model.Description;
+                theme.ParentThemeId = model.ParentThemeId;
+                theme.Modified = DateTime.Now;
+                theme.Editor = user;
+
+                await this._context.SaveChangesAsync();
+                return RedirectToAction("Index");
             }
-            return View(theme);
+            return View(model);
         }
 
         // GET: Themes/Delete/5
@@ -240,6 +255,8 @@ namespace LearnLatin.Controllers
             }
 
             var theme = await _context.Themes
+                .Include(t => t.Creator)
+                .Include(t => t.Editor)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (theme == null)
             {
@@ -269,9 +286,5 @@ namespace LearnLatin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ThemeExists(Guid id)
-        {
-            return _context.Themes.Any(e => e.Id == id);
-        }
     }
 }

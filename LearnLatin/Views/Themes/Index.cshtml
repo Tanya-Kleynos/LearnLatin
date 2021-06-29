@@ -1,87 +1,67 @@
 ﻿@model IEnumerable<LearnLatin.Models.Theme>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Темы";
 }
 
-<h1>Index</h1>
+<h1>Темы</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Добавить тему</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Created)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Modified)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NumOfTests)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-<<<<<<< HEAD
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Created)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Modified)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NumOfTests)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-=======
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modified)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.NumOfTests)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
->>>>>>> 11ce9e31e9087f12fa4c6552210b417fb5c76e5c
-    </tbody>
-</table>
+
+<div class="panel panel-default">
+    <table class="table table-striped">
+        <tbody>
+            @foreach (var item in Model.OrderBy(x => x.Name))
+            {
+                @if (item.Name != "Root")
+                {
+                    <tr>
+                        <td>
+                            <h3><a asp-action="Details" asp-route-id="@item.Id" style="font-size: 1em">@item.Name</a></h3><br />
+                            @item.Description<br />
+
+                            @if (item.ParentTheme != null)
+                            {
+                                <p>Родительская тема: @item.ParentTheme.Name</p>
+                            }
+                            <div class="p-2"><i>Создан: @item.Creator.UserName @item.Created</i></div>
+                        </td>
+                        <td class="align-middle" style="min-width: 90px;">
+                            @item.NumOfTests тестов<br />
+                            @if (User.IsInRole("Administrators"))
+                            {
+                                <a asp-action="Create" asp-controller="TheoryBlocks" asp-route-id="@item.Id">Добавить теоретический блок</a><br />
+                                <a asp-action="AddTest" asp-controller="Themes" asp-route-id="@item.Id">Добавить тест</a>
+                            }
+                        </td>
+
+                        @if (item.Editor != null)
+                        {
+                            <td>
+                                <i>
+                                    Редактировано:<br />
+                                    @item.Editor.UserName<br />
+                                    @item.Modified
+                                </i>
+                            </td>
+                        }
+
+                        <td class="align-middle" style="min-width: 70px;">
+                            <a asp-action="Edit" asp-route-id="@item.Id">
+                                <i data-toggle="tooltip" data-title="Редактировать" class="fas fa-pencil-alt fa-lg text-muted hand_cursor"></i>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id">
+                                <i data-toggle="tooltip" data-title="Удалить" class="fas fa-trash-alt fa-lg text-danger hand_cursor"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+
+                }
+            }
+        </tbody>
+    </table>
+</div>
+

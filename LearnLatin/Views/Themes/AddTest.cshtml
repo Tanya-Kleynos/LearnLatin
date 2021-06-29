@@ -1,18 +1,17 @@
 ﻿@model LearnLatin.Models.CreateViewModels.TestAddViewModel
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Добавить тест";
 }
 
-<h1>Add</h1>
+<h1>Добавить тест</h1>
 
-<h4>Test</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="AddTest">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
-                    <label asp-for="TestId" class="col-md-2 control-label"></label>
+                    <label asp-for="TestId" class="col-md-2 control-label">Тест</label>
                     <div class="col-md-10">
                         <select asp-for="TestId" class="form-control" asp-items="ViewBag.TestId"></select>
                     </div>
@@ -25,7 +24,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="Themes" asp-action="Index">Назад</a>
 </div>
 
 @section Scripts {
