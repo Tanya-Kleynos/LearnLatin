@@ -1,55 +1,100 @@
-﻿@model LearnLatin.Models.Theme
+﻿@model LearnLatin.Models.ViewModels.ThemeViewModel
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Тема: @Model.Theme.Name</h1>
+<hr />
+<h3>@Model.Theme.Description</h3>
+
+
+<div class="progress mt-1">
+    <input type="hidden" name="progress" value="@Model.UserTheme.Progress" />
+    <div class="progress-bar" id="progressPerc" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+
 
 <div>
-    <h4>Theme</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+    @if (User.IsInRole("Administrators"))
+    {
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Theme.Created)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Theme.Created)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Theme.Modified)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Theme.Modified)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Created)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Theme.NumOfTests)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Created)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Theme.NumOfTests)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Modified)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Modified)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NumOfTests)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NumOfTests)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PercentageProgress)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PercentageProgress)
-        </dd>
-    </dl>
+    }
+</div>
+@foreach (var item in Model.TheoryBlocks)
+{
+    <h3>@item.Name</h3>
+    <div>
+        @item.Text
+    </div>
+    <br />
+}
+
+<div class="row">
+    <table>
+        <thead>
+            <tr>
+                <th>
+                    Тесты
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Theme.Tests)
+            {
+                <tr>
+                    <td>
+                        @if (User.IsInRole("Administrators"))
+                        {
+                            <a asp-action="Details" asp-controller="Tests" asp-route-id="@item.Id">
+                                @item.Name
+                            </a>
+                        }
+                        else
+                        {
+                            <a>
+                                @item.Name
+                            </a>
+                            <a class="btn btn-primary text-center mr-3"
+                               asp-area="" asp-controller="Tests" asp-action="Start" asp-route-id="@item.Id">
+                                Пройти тест
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Create" asp-controller="TheoryBlocks" asp-route-id="@Model.Id">Добавить теоретический блок</a> |
-    <a asp-action="Index">Back to List</a>
+    @if (User.IsInRole("Administrators"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Theme.Id">Edit</a>
+    }
+    @if (User.IsInRole("Administrators"))
+    {
+        <a asp-action="Create" asp-controller="TheoryBlocks" asp-route-id="@Model.Theme.Id">Добавить теоретический блок</a>
+    }
+    @if (User.IsInRole("Administrators"))
+    {
+        <a asp-action="AddTest" asp-controller="Themes" asp-route-id="@Model.Theme.Id">Добавить тест</a>
+    }
+    <a asp-action="Index" asp-controller="PersonalArea">Назад</a>
 </div>

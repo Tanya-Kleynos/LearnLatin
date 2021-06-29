@@ -24,12 +24,12 @@
             </div>
             @if (ViewBag.ThemeId != null)
             {
-            <div class="form-group">
-                <label asp-for="ParentThemeId" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <select asp-for="ParentThemeId" class="form-control" asp-items="ViewBag.ThemeId"></select>
+                <div class="form-group">
+                    <label asp-for="ParentThemeId" class="col-md-2 control-label"></label>
+                    <div class="col-md-10">
+                        <select asp-for="ParentThemeId" class="form-control" asp-items="ViewBag.ThemeId"></select>
+                    </div>
                 </div>
-            </div>
             }
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
