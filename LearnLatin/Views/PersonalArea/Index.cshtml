@@ -44,13 +44,16 @@
                     <tbody>
                         @foreach (var item in Model.Themes)
                         {
-                        <tr>
-                            <td>
-                                <a asp-action="Details" asp-controller="Themes" asp-route-id="@item.Id">
-                                    @item.Name </a>
-                                
-                            </td>
-                        </tr>
+                            if (item.Name != "Root")
+                            {
+                                <tr>
+                                    <td>
+                                        <a asp-action="Details" asp-controller="Themes" asp-route-id="@item.Id">
+                                            @item.Name
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
                         }
                     </tbody>
                 </table>
